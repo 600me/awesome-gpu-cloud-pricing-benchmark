@@ -2,11 +2,11 @@
 
 [Live pricing dashboard](https://gpu.mybskm.top/)
 
-Updated: **2026-10-16T14:13:55Z** · All prices in USD.
+Updated: **2026-10-16T17:32:23Z** · All prices in USD.
 
 Stop paying for idle GPUs and expensive output tokens. Compare RunPod vs Vast.ai GPU rates, then compare Together.ai, OpenRouter and DeepInfra API costs before your next deployment.
 
-100 H100 SXM GPU-hours cost $269.00 at RunPod (Community, live) versus $399.00 at RunPod (Secure, live): a $130.00 compute-only gap. These are quoted rates, not equivalent service guarantees or a reservation.
+100 H100 SXM GPU-hours cost $213.60 at Vast.ai (Verified on-demand sample, live) versus $399.00 at RunPod (Secure, live): a $185.40 compute-only gap. These are quoted rates, not equivalent service guarantees or a reservation.
 
 [Launch on RunPod](https://go.272738.xyz/runpod) · [Find a Vast.ai GPU](https://go.272738.xyz/vastai)
 
@@ -16,21 +16,21 @@ Compute-only prices per GPU-hour; storage, bandwidth, tax and setup time can add
 
 | Provider / tier | GPU | VRAM | USD / GPU-hour | 100 GPU-hours | Evidence | Launch |
 |---|---|---:|---:|---:|---|---|
-| RunPod / Community | RTX 4090 | 24 GB | $0.340 | $34.00 | live; 2026-10-16T14:13:55Z | [Launch](https://go.272738.xyz/runpod) |
-| Vast.ai / Verified on-demand sample | RTX 4090 | 24 GB | $0.392 | $39.20 | live; 2026-10-16T14:13:55Z | [Launch](https://go.272738.xyz/vastai) |
-| Vast.ai / Verified on-demand sample | A100 80G PCIe | 80 GB | $0.802 | $80.20 | live; 2026-10-16T14:13:55Z | [Launch](https://go.272738.xyz/vastai) |
-| RunPod / Secure | RTX 4090 | 24 GB | $0.890 | $89.00 | live; 2026-10-16T14:13:55Z | [Launch](https://go.272738.xyz/runpod) |
-| Vast.ai / Verified on-demand sample | A100 80G SXM | 80 GB | $1.189 | $118.90 | live; 2026-10-16T14:13:55Z | [Launch](https://go.272738.xyz/vastai) |
-| RunPod / Community | A100 80G PCIe | 80 GB | $1.190 | $119.00 | live; 2026-10-16T14:13:55Z | [Launch](https://go.272738.xyz/runpod) |
-| RunPod / Community | A100 80G SXM | 80 GB | $1.390 | $139.00 | live; 2026-10-16T14:13:55Z | [Launch](https://go.272738.xyz/runpod) |
-| RunPod / Secure | A100 80G SXM | 80 GB | $1.790 | $179.00 | live; 2026-10-16T14:13:55Z | [Launch](https://go.272738.xyz/runpod) |
-| RunPod / Secure | A100 80G PCIe | 80 GB | $1.790 | $179.00 | live; 2026-10-16T14:13:55Z | [Launch](https://go.272738.xyz/runpod) |
-| RunPod / Community | H100 PCIe | 80 GB | $1.990 | $199.00 | live; 2026-10-16T14:13:55Z | [Launch](https://go.272738.xyz/runpod) |
-| RunPod / Community | H100 SXM | 80 GB | $2.690 | $269.00 | live; 2026-10-16T14:13:55Z | [Launch](https://go.272738.xyz/runpod) |
-| RunPod / Secure | H100 PCIe | 80 GB | $2.890 | $289.00 | live; 2026-10-16T14:13:55Z | [Launch](https://go.272738.xyz/runpod) |
-| Vast.ai / Verified on-demand sample | H100 PCIe | 80 GB | $2.955 | $295.50 | live; 2026-10-16T14:13:55Z | [Launch](https://go.272738.xyz/vastai) |
-| Vast.ai / Verified on-demand sample | H100 SXM | 80 GB | $3.507 | $350.70 | cache (origin: live); 2026-10-16T12:57:12Z | [Launch](https://go.272738.xyz/vastai) |
-| RunPod / Secure | H100 SXM | 80 GB | $3.990 | $399.00 | live; 2026-10-16T14:13:55Z | [Launch](https://go.272738.xyz/runpod) |
+| RunPod / Community | RTX 4090 | 24 GB | $0.340 | $34.00 | live; 2026-10-16T17:32:23Z | [Launch](https://go.272738.xyz/runpod) |
+| Vast.ai / Verified on-demand sample | RTX 4090 | 24 GB | $0.401 | $40.10 | live; 2026-10-16T17:32:23Z | [Launch](https://go.272738.xyz/vastai) |
+| Vast.ai / Verified on-demand sample | A100 80G PCIe | 80 GB | $0.873 | $87.30 | live; 2026-10-16T17:32:23Z | [Launch](https://go.272738.xyz/vastai) |
+| RunPod / Secure | RTX 4090 | 24 GB | $0.890 | $89.00 | live; 2026-10-16T17:32:23Z | [Launch](https://go.272738.xyz/runpod) |
+| Vast.ai / Verified on-demand sample | A100 80G SXM | 80 GB | $1.189 | $118.90 | live; 2026-10-16T17:32:23Z | [Launch](https://go.272738.xyz/vastai) |
+| RunPod / Community | A100 80G PCIe | 80 GB | $1.190 | $119.00 | live; 2026-10-16T17:32:23Z | [Launch](https://go.272738.xyz/runpod) |
+| RunPod / Community | A100 80G SXM | 80 GB | $1.390 | $139.00 | live; 2026-10-16T17:32:23Z | [Launch](https://go.272738.xyz/runpod) |
+| RunPod / Secure | A100 80G SXM | 80 GB | $1.790 | $179.00 | live; 2026-10-16T17:32:23Z | [Launch](https://go.272738.xyz/runpod) |
+| RunPod / Secure | A100 80G PCIe | 80 GB | $1.790 | $179.00 | live; 2026-10-16T17:32:23Z | [Launch](https://go.272738.xyz/runpod) |
+| RunPod / Community | H100 PCIe | 80 GB | $1.990 | $199.00 | live; 2026-10-16T17:32:23Z | [Launch](https://go.272738.xyz/runpod) |
+| Vast.ai / Verified on-demand sample | H100 PCIe | 80 GB | $2.002 | $200.20 | live; 2026-10-16T17:32:23Z | [Launch](https://go.272738.xyz/vastai) |
+| Vast.ai / Verified on-demand sample | H100 SXM | 80 GB | $2.136 | $213.60 | live; 2026-10-16T17:32:23Z | [Launch](https://go.272738.xyz/vastai) |
+| RunPod / Community | H100 SXM | 80 GB | $2.690 | $269.00 | live; 2026-10-16T17:32:23Z | [Launch](https://go.272738.xyz/runpod) |
+| RunPod / Secure | H100 PCIe | 80 GB | $2.890 | $289.00 | live; 2026-10-16T17:32:23Z | [Launch](https://go.272738.xyz/runpod) |
+| RunPod / Secure | H100 SXM | 80 GB | $3.990 | $399.00 | live; 2026-10-16T17:32:23Z | [Launch](https://go.272738.xyz/runpod) |
 
 ## DeepSeek R1 / V3 API pricing benchmark and Llama 3.3 70B
 
@@ -38,12 +38,12 @@ Rates below are USD per 1M tokens. A long reasoning answer can erase a cheap inp
 
 | Provider | Model / endpoint | Input / 1M | Output / 1M | Example bill | Evidence | Start |
 |---|---|---:|---:|---:|---|---|
-| OpenRouter | DeepSeek-V3 (`deepseek/deepseek-chat`) | $0.257400 | $1.028700 | $4.63 | live; 2026-10-16T14:13:55Z | [Explore](https://go.272738.xyz/openrouter) |
-| OpenRouter | DeepSeek-R1 (`deepseek/deepseek-r1`) | $0.700000 | $2.500000 | $12.00 | live; 2026-10-16T14:13:55Z | [Explore](https://go.272738.xyz/openrouter) |
-| OpenRouter | Llama-3.3-70B (`meta-llama/llama-3.3-70b-instruct`) | $0.100000 | $0.320000 | $1.64 | live; 2026-10-16T14:13:55Z | [Explore](https://go.272738.xyz/openrouter) |
-| DeepInfra | DeepSeek-V3 (`deepseek-ai/DeepSeek-V3`) | $0.320000 | $0.890000 | $4.98 | live; 2026-10-16T14:13:55Z | [Explore](https://go.272738.xyz/deepinfra) |
-| DeepInfra | DeepSeek-R1-0528 (`deepseek-ai/DeepSeek-R1-0528`) | $0.500000 | $2.150000 | $9.30 | live; 2026-10-16T14:13:55Z | [Explore](https://go.272738.xyz/deepinfra) |
-| DeepInfra | Llama-3.3-70B Turbo (`meta-llama/Llama-3.3-70B-Instruct-Turbo`) | $0.100000 | $0.320000 | $1.64 | live; 2026-10-16T14:13:55Z | [Explore](https://go.272738.xyz/deepinfra) |
+| OpenRouter | DeepSeek-V3 (`deepseek/deepseek-chat`) | $0.320000 | $0.890000 | $4.98 | live; 2026-10-16T17:32:23Z | [Explore](https://go.272738.xyz/openrouter) |
+| OpenRouter | DeepSeek-R1 (`deepseek/deepseek-r1`) | $0.700000 | $2.500000 | $12.00 | live; 2026-10-16T17:32:23Z | [Explore](https://go.272738.xyz/openrouter) |
+| OpenRouter | Llama-3.3-70B (`meta-llama/llama-3.3-70b-instruct`) | $0.100000 | $0.320000 | $1.64 | live; 2026-10-16T17:32:23Z | [Explore](https://go.272738.xyz/openrouter) |
+| DeepInfra | DeepSeek-V3 (`deepseek-ai/DeepSeek-V3`) | $0.320000 | $0.890000 | $4.98 | live; 2026-10-16T17:32:23Z | [Explore](https://go.272738.xyz/deepinfra) |
+| DeepInfra | DeepSeek-R1-0528 (`deepseek-ai/DeepSeek-R1-0528`) | $0.500000 | $2.150000 | $9.30 | live; 2026-10-16T17:32:23Z | [Explore](https://go.272738.xyz/deepinfra) |
+| DeepInfra | Llama-3.3-70B Turbo (`meta-llama/Llama-3.3-70B-Instruct-Turbo`) | $0.100000 | $0.320000 | $1.64 | live; 2026-10-16T17:32:23Z | [Explore](https://go.272738.xyz/deepinfra) |
 | Together.ai | DeepSeek-V3-0324 (`deepseek-ai/DeepSeek-V3`) | $1.250000 | $1.250000 | $15.00 | cache (origin: baseline); reference 2026-10-16 | [Explore](https://go.272738.xyz/together) |
 | Together.ai | DeepSeek-R1-0528 (`deepseek-ai/DeepSeek-R1-0528`) | N/A | N/A | N/A | null; reference 2026-10-16 | [Explore](https://go.272738.xyz/together) |
 | Together.ai | Llama-3.3-70B (`meta-llama/Llama-3.3-70B-Instruct-Turbo`) | $1.040000 | $1.040000 | $12.48 | cache (origin: baseline); reference 2026-10-16 | [Explore](https://go.272738.xyz/together) |
@@ -62,27 +62,27 @@ Rates below are USD per 1M tokens. A long reasoning answer can erase a cheap inp
 
 Live = public API quote observed this run; cache = previous quote with its original date and origin; baseline = dated built-in reference, not a refreshed quote; N/A = no usable price. The page update time is not the quote freshness time. This is a pricing benchmark, not a measured speed, quality or uptime benchmark.
 
-- **RunPod · H100 SXM**: Community catalog rate; inventory not guaranteed (live; 2026-10-16T14:13:55Z). Source: `https://api.runpod.io/graphql`.
-- **RunPod · H100 SXM**: Secure catalog rate; inventory not guaranteed (live; 2026-10-16T14:13:55Z). Source: `https://api.runpod.io/graphql`.
-- **Vast.ai · H100 SXM**: Lowest sampled verified rentable offer; 1 GPU bundle; storage/network extra (cache (origin: live); 2026-10-16T12:57:12Z). Source: `https://console.vast.ai/api/v0/bundles/`.
-- **RunPod · H100 PCIe**: Community catalog rate; inventory not guaranteed (live; 2026-10-16T14:13:55Z). Source: `https://api.runpod.io/graphql`.
-- **RunPod · H100 PCIe**: Secure catalog rate; inventory not guaranteed (live; 2026-10-16T14:13:55Z). Source: `https://api.runpod.io/graphql`.
-- **Vast.ai · H100 PCIe**: Lowest sampled verified rentable offer; 1 GPU bundle; storage/network extra (live; 2026-10-16T14:13:55Z). Source: `https://console.vast.ai/api/v0/bundles/`.
-- **RunPod · A100 80G SXM**: Community catalog rate; inventory not guaranteed (live; 2026-10-16T14:13:55Z). Source: `https://api.runpod.io/graphql`.
-- **RunPod · A100 80G SXM**: Secure catalog rate; inventory not guaranteed (live; 2026-10-16T14:13:55Z). Source: `https://api.runpod.io/graphql`.
-- **Vast.ai · A100 80G SXM**: Lowest sampled verified rentable offer; 1 GPU bundle; storage/network extra (live; 2026-10-16T14:13:55Z). Source: `https://console.vast.ai/api/v0/bundles/`.
-- **RunPod · A100 80G PCIe**: Community catalog rate; inventory not guaranteed (live; 2026-10-16T14:13:55Z). Source: `https://api.runpod.io/graphql`.
-- **RunPod · A100 80G PCIe**: Secure catalog rate; inventory not guaranteed (live; 2026-10-16T14:13:55Z). Source: `https://api.runpod.io/graphql`.
-- **Vast.ai · A100 80G PCIe**: Lowest sampled verified rentable offer; 1 GPU bundle; storage/network extra (live; 2026-10-16T14:13:55Z). Source: `https://console.vast.ai/api/v0/bundles/`.
-- **RunPod · RTX 4090**: Community catalog rate; inventory not guaranteed (live; 2026-10-16T14:13:55Z). Source: `https://api.runpod.io/graphql`.
-- **RunPod · RTX 4090**: Secure catalog rate; inventory not guaranteed (live; 2026-10-16T14:13:55Z). Source: `https://api.runpod.io/graphql`.
-- **Vast.ai · RTX 4090**: Lowest sampled verified rentable offer; 2 GPU bundle; storage/network extra (live; 2026-10-16T14:13:55Z). Source: `https://console.vast.ai/api/v0/bundles/`.
-- **OpenRouter · DeepSeek-V3**: Router catalog; provider routing can change (live; 2026-10-16T14:13:55Z). Source: `https://openrouter.ai/api/v1/models`.
-- **OpenRouter · DeepSeek-R1**: Router catalog; provider routing can change (live; 2026-10-16T14:13:55Z). Source: `https://openrouter.ai/api/v1/models`.
-- **OpenRouter · Llama-3.3-70B**: Router catalog; provider routing can change (live; 2026-10-16T14:13:55Z). Source: `https://openrouter.ai/api/v1/models`.
-- **DeepInfra · DeepSeek-V3**: Standard uncached catalog rate (live; 2026-10-16T14:13:55Z). Source: `https://api.deepinfra.com/models/list`.
-- **DeepInfra · DeepSeek-R1-0528**: 0528 revision; not the original R1 checkpoint (live; 2026-10-16T14:13:55Z). Source: `https://api.deepinfra.com/models/list`.
-- **DeepInfra · Llama-3.3-70B Turbo**: Turbo FP8 variant (live; 2026-10-16T14:13:55Z). Source: `https://api.deepinfra.com/models/list`.
+- **RunPod · H100 SXM**: Community catalog rate; inventory not guaranteed (live; 2026-10-16T17:32:23Z). Source: `https://api.runpod.io/graphql`.
+- **RunPod · H100 SXM**: Secure catalog rate; inventory not guaranteed (live; 2026-10-16T17:32:23Z). Source: `https://api.runpod.io/graphql`.
+- **Vast.ai · H100 SXM**: Lowest sampled verified rentable offer; 1 GPU bundle; storage/network extra (live; 2026-10-16T17:32:23Z). Source: `https://console.vast.ai/api/v0/bundles/`.
+- **RunPod · H100 PCIe**: Community catalog rate; inventory not guaranteed (live; 2026-10-16T17:32:23Z). Source: `https://api.runpod.io/graphql`.
+- **RunPod · H100 PCIe**: Secure catalog rate; inventory not guaranteed (live; 2026-10-16T17:32:23Z). Source: `https://api.runpod.io/graphql`.
+- **Vast.ai · H100 PCIe**: Lowest sampled verified rentable offer; 1 GPU bundle; storage/network extra (live; 2026-10-16T17:32:23Z). Source: `https://console.vast.ai/api/v0/bundles/`.
+- **RunPod · A100 80G SXM**: Community catalog rate; inventory not guaranteed (live; 2026-10-16T17:32:23Z). Source: `https://api.runpod.io/graphql`.
+- **RunPod · A100 80G SXM**: Secure catalog rate; inventory not guaranteed (live; 2026-10-16T17:32:23Z). Source: `https://api.runpod.io/graphql`.
+- **Vast.ai · A100 80G SXM**: Lowest sampled verified rentable offer; 1 GPU bundle; storage/network extra (live; 2026-10-16T17:32:23Z). Source: `https://console.vast.ai/api/v0/bundles/`.
+- **RunPod · A100 80G PCIe**: Community catalog rate; inventory not guaranteed (live; 2026-10-16T17:32:23Z). Source: `https://api.runpod.io/graphql`.
+- **RunPod · A100 80G PCIe**: Secure catalog rate; inventory not guaranteed (live; 2026-10-16T17:32:23Z). Source: `https://api.runpod.io/graphql`.
+- **Vast.ai · A100 80G PCIe**: Lowest sampled verified rentable offer; 1 GPU bundle; storage/network extra (live; 2026-10-16T17:32:23Z). Source: `https://console.vast.ai/api/v0/bundles/`.
+- **RunPod · RTX 4090**: Community catalog rate; inventory not guaranteed (live; 2026-10-16T17:32:23Z). Source: `https://api.runpod.io/graphql`.
+- **RunPod · RTX 4090**: Secure catalog rate; inventory not guaranteed (live; 2026-10-16T17:32:23Z). Source: `https://api.runpod.io/graphql`.
+- **Vast.ai · RTX 4090**: Lowest sampled verified rentable offer; 2 GPU bundle; storage/network extra (live; 2026-10-16T17:32:23Z). Source: `https://console.vast.ai/api/v0/bundles/`.
+- **OpenRouter · DeepSeek-V3**: Router catalog; provider routing can change (live; 2026-10-16T17:32:23Z). Source: `https://openrouter.ai/api/v1/models`.
+- **OpenRouter · DeepSeek-R1**: Router catalog; provider routing can change (live; 2026-10-16T17:32:23Z). Source: `https://openrouter.ai/api/v1/models`.
+- **OpenRouter · Llama-3.3-70B**: Router catalog; provider routing can change (live; 2026-10-16T17:32:23Z). Source: `https://openrouter.ai/api/v1/models`.
+- **DeepInfra · DeepSeek-V3**: Standard uncached catalog rate (live; 2026-10-16T17:32:23Z). Source: `https://api.deepinfra.com/models/list`.
+- **DeepInfra · DeepSeek-R1-0528**: 0528 revision; not the original R1 checkpoint (live; 2026-10-16T17:32:23Z). Source: `https://api.deepinfra.com/models/list`.
+- **DeepInfra · Llama-3.3-70B Turbo**: Turbo FP8 variant (live; 2026-10-16T17:32:23Z). Source: `https://api.deepinfra.com/models/list`.
 - **Together.ai · DeepSeek-V3-0324**: Dedicated/reference listing; serverless availability not verified (cache (origin: baseline); reference 2026-10-16). Source: `https://www.together.ai/models/deepseek-v3`.
 - **Together.ai · DeepSeek-R1-0528**: Not available on Together Serverless; no current token quote (null; reference 2026-10-16). Source: `https://www.together.ai/models/deepseek-r1`.
 - **Together.ai · Llama-3.3-70B**: Public pricing page reference; API authentication required (cache (origin: baseline); reference 2026-10-16). Source: `https://www.together.ai/pricing`.
@@ -94,6 +94,7 @@ OpenRouter USD/token × 1,000,000; DeepInfra cents/token × 10,000. Vast.ai bund
 Refresh locally with `python3 -m pip install -r requirements.txt` followed by `python3 probe_gpu_pricing.py`. Each provider request has a 10-second timeout. Failed or missing quotes fall back to data.json, then the dated baseline, then null. All three outputs are replaced atomically.
 
 Product buttons use fixed outbound relay links. This repository does not verify relay destinations, affiliate enrollment or commissions; visiting a provider does not purchase compute.
+
 
 ## Sister Projects (Matrix Interlinks)
 
