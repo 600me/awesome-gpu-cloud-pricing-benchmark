@@ -94,3 +94,9 @@ OpenRouter USD/token × 1,000,000; DeepInfra cents/token × 10,000. Vast.ai bund
 Refresh locally with `python3 -m pip install -r requirements.txt` followed by `python3 probe_gpu_pricing.py`. Each provider request has a 10-second timeout. Failed or missing quotes fall back to data.json, then the dated baseline, then null. All three outputs are replaced atomically.
 
 Product buttons use fixed outbound relay links. This repository does not verify relay destinations, affiliate enrollment or commissions; visiting a provider does not purchase compute.
+
+## Sister Projects (Matrix Interlinks)
+
+- [Proxy Infrastructure Benchmark](https://proxy.mybskm.top) · [GitHub repository](https://github.com/600me/awesome-residential-proxies-benchmark)
+- [Global GPU Cloud Benchmark](https://gpu.mybskm.top) · [GitHub repository](https://github.com/600me/awesome-gpu-cloud-pricing-benchmark)
+- [Global Payments Matrix](https://pay.mybskm.top) · [GitHub repository](https://github.com/600me/awesome-indie-global-payments-matrix)
