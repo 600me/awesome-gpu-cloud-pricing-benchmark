@@ -1,0 +1,42 @@
+name: Daily GPU pricing benchmark
+
+on:
+  schedule:
+    - cron: '23 13 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-benchmark
+  cancel-in-progress: false
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install dependencies
+        run: python3 -m pip install -r requirements.txt
+      - name: Refresh pricing
+        run: python3 probe_gpu_pricing.py
+      - name: Commit changed benchmark outputs
+        run: |
+          git add -- data.json README.md index.html
+          if git diff --cached --quiet; then
+            echo "No benchmark changes."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'chore: refresh GPU and LLM pricing'
+          git pull --rebase origin main
+          git push origin HEAD:main
