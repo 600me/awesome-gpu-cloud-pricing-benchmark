@@ -65,3 +65,6 @@
 - [x] 其他 26 项 Nginx 配置文件 SHA-256 与备份前一致；`proxy.mybskm.top` 仍返回 HTTP/2 200，`go.272738.xyz/runpod` 和 `/vastai` 仍返回原专属参数的 HTTP/2 302。
 
 本机普通 DNS 路径在新记录添加后曾返回缓存的 NXDOMAIN，因此增加 Google DoH 和 VPS 公共 DNS 交叉核验；未修改本机全局 DNS 或其他业务配置。
+
+- [x] 代码及三项静态产物已通过提交 `f0d5e3d` 推送 GitHub `main`；施工令执行记录随本次收尾提交同步。
+- [x] 四项客观验收已在 VPS 上通过；本次无浏览器标签、无新增常驻进程，执行完成退出。
