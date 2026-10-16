@@ -64,3 +64,16 @@ SSH 到 `us-server`，创建 `/var/www/kais-gpu-benchmark` 并同步本地 `inde
 
 ## 五、交付指令
 立即执行上述全部动作，完成验收后退出，严禁设立人工等待。
+
+---
+
+## 执行记录（2026-10-16）
+
+- [x] `.github/workflows/daily-benchmark.yml` 已推送：UTC 13:23 每日调度，支持 `workflow_dispatch`，仅提交三个生成文件的实际 Git 变更。
+- [x] GitHub 首次手动运行成功，探针与 bot 提交推送步骤均通过：[运行 #1](https://github.com/600me/awesome-gpu-cloud-pricing-benchmark/actions/runs/38899335578)。定时自然运行尚未发生，不将手动运行计作定时验收。
+- [x] 五条 GPU/LLM 中继均返回指定目标的 302；四条既有代理中继仍返回原目标的 301。移除新增五行后，配置与原备份逐字一致。
+- [x] 原中继配置已备份至 VPS `/root/kais-gpu-benchmark-backup-20261016T121354Z/kais-proxy-links`；`nginx -t` 通过且 reload 成功。
+- [x] 静态页面部署至 `/var/www/kais-gpu-benchmark/index.html`，站点配置及启用软链均已创建。施工令未指定静态站域名，使用现有 VPS IP：[看板](http://96.9.225.9/)。HTTP 200，发布内容哈希与本地一致。
+- [x] 公开仓库已创建并关联指定 SSH origin，`git push -u origin main` 成功：[仓库](https://github.com/600me/awesome-gpu-cloud-pricing-benchmark)。公开页面 HTTP 200。
+- 密钥事实限制：`~/.ssh/id_ed25519.pub` 已绑定住宅代理仓库的部署密钥，无法在 GitHub 重复绑定。保留其原有权限，本仓库使用 `~/.ssh/id_ed25519_gpu_benchmark` 独立读写部署密钥，并在本仓库 `core.sshCommand` 指定；未修改其他仓库。
+- 中继中的 `REPLACE_ME` 按施工令保留，仅证明跳转生效，不表示联盟资格或佣金已经生效。本次初始化同步未添加每日 VPS 自动同步工序。
