@@ -414,6 +414,7 @@ def atomic_write(path, content):
             handle.write(content)
             handle.flush()
             os.fsync(handle.fileno())
+        os.chmod(name, 0o644)
         os.replace(name, path)
     finally:
         if name and os.path.exists(name):
