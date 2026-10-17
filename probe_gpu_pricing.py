@@ -321,9 +321,39 @@ def render_html(data):
     nav = " ".join(f'<a href="{url}" rel="noopener noreferrer">{html.escape(name)} ↗</a>' for name, url in LINKS.items())
     template = r'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Cheapest H100 GPU Cloud · RunPod vs Vast.ai · DeepSeek API Pricing 2026</title>
+<title>Cheapest H100 Cloud · RunPod vs Vast.ai · DeepSeek API Pricing 2026</title>
 <link rel="canonical" href="https://gpu.mybskm.top/">
-<meta name="description" content="Compare H100, A100 80GB and RTX 4090 hourly GPU prices, plus DeepSeek R1/V3 and Llama 3.3 API costs across five providers. Dated quotes and clear deployment links.">
+<meta property="og:title" content="Cheapest H100 Cloud · RunPod vs Vast.ai · DeepSeek API Pricing 2026">
+<meta property="og:description" content="Find the cheapest H100 cloud for your workload. Compare H100, A100 and RTX 4090 hourly quotes, model 100 GPU-hours and explore provider deployment options.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gpu.mybskm.top/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cheapest H100 Cloud · RunPod vs Vast.ai · DeepSeek API Pricing 2026">
+<meta name="twitter:description" content="Find the cheapest H100 cloud for your workload. Compare H100, A100 and RTX 4090 hourly quotes, model 100 GPU-hours and explore provider deployment options.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Cheapest H100 Cloud · RunPod vs Vast.ai · DeepSeek API Pricing 2026",
+  "url": "https://gpu.mybskm.top/",
+  "description": "Find the cheapest H100 cloud for your workload. Compare H100, A100 and RTX 4090 hourly quotes, model 100 GPU-hours and explore provider deployment options.",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript for interactive comparisons.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "description": "Free access to this comparison tool; provider services are priced separately."
+  },
+  "featureList": [
+    "H100, A100 and RTX 4090 hourly quote comparison",
+    "100 GPU-hour cost estimates",
+    "DeepSeek and Llama API token cost comparison"
+  ]
+}
+</script>
+<meta name="description" content="Find the cheapest H100 cloud for your workload. Compare H100, A100 and RTX 4090 hourly quotes, model 100 GPU-hours and explore provider deployment options.">
 <style>
 :root{color-scheme:dark;--bg:#090d14;--panel:#101925;--line:#253246;--muted:#a0afc2;--green:#63f6ba;--ink:#edf5ff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 90% 0,#152d31,transparent 45%),var(--bg);color:var(--ink);font:15px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace}main{max-width:1320px;margin:auto;padding:42px 24px}a{color:var(--green)}.eyebrow{color:var(--green);letter-spacing:.15em;font-size:12px}h1{font-family:system-ui,sans-serif;letter-spacing:-.04em;font-size:clamp(32px,5vw,62px);line-height:1.1;max-width:1000px;margin:20px 0}h2{font:600 23px system-ui,sans-serif}.intro{max-width:900px;color:var(--muted)}.callout{background:linear-gradient(100deg,#102a26,#122030);border:1px solid #2b5e50;border-radius:14px;padding:20px;margin:24px 0}.providers{display:flex;gap:10px;flex-wrap:wrap}.providers a,.action{display:inline-block;text-decoration:none;padding:9px 13px;border:1px solid #326b58;border-radius:7px;background:#122b25}.tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:28px 0 14px}button,input,select{font:inherit;color:var(--ink);border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:12px}button{cursor:pointer}button[aria-selected=true]{background:var(--green);color:#06251a}input{flex:1;min-width:200px}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:12px;background:#0d1520}table{width:100%;border-collapse:collapse;min-width:860px}th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}th,td{padding:17px 16px;border-bottom:1px solid var(--line);vertical-align:top}tbody tr:hover{background:#152232}small{display:block;color:var(--muted);font-size:11px;max-width:300px;overflow-wrap:anywhere}.price{font-size:20px;color:var(--green);white-space:nowrap}.badge{font-size:11px;color:#eecb87}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:28px 0}.card{padding:20px;background:var(--panel);border:1px solid var(--line);border-radius:12px}.card p,footer{color:var(--muted);font-size:12px}.empty{text-align:center;color:var(--muted)}footer{border-top:1px solid var(--line);padding-top:20px;margin-top:32px}#count{color:var(--muted);font-size:12px}@media(max-width:600px){main{padding:28px 14px}.tools>*{flex:1}select{width:100%}.price{font-size:17px}}
 </style></head><body><main>

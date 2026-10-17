@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://gpu.mybskm.top/sitemap.xml
