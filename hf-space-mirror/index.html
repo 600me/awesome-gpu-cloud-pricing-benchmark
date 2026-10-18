@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GPU Fit &amp; Cost Calculator · VRAM, KV Cache, NVLink, RunPod vs Vast.ai</title>
+<meta name="description" content="Free static GPU sizing calculator. Estimate model weights, KV cache (including DeepSeek MLA), CUDA overhead and 15% safety headroom, then compare RunPod and Vast.ai rates.">
+<link rel="canonical" href="https://gpu.mybskm.top/calculator/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%235ef2b2'/%3E%3Ctext x='32' y='45' font-size='36' text-anchor='middle'%3E%E2%96%A6%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="GPU Fit &amp; Cost Calculator · VRAM, KV Cache and Rental Cost">
+<meta property="og:description" content="Will it fit? Size weights, KV cache and multi-GPU topology, then price the exact card count on RunPod and Vast.ai.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gpu.mybskm.top/calculator/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GPU Fit &amp; Cost Calculator">
+<meta name="twitter:description" content="VRAM, KV cache, DeepSeek MLA, NVLink topology and RunPod vs Vast.ai cost ledger.">
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#060a10;--bg2:#0a111b;--panel:#0d1622;--panel2:#101d2c;--line:#22354b;--line2:#2d4560;
+  --ink:#eaf4ff;--muted:#93a7bd;--dim:#6e8299;
+  --green:#5ef2b2;--green2:#2bd391;--cyan:#58d7ff;--amber:#ffc66d;--red:#ff7185;--violet:#b69cff;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;min-height:100vh;color:var(--ink);
+  font:14px/1.65 var(--mono);
+  background:
+    radial-gradient(900px 500px at 88% -8%,rgba(43,211,145,.16),transparent 62%),
+    radial-gradient(700px 420px at 2% 8%,rgba(88,215,255,.08),transparent 58%),
+    linear-gradient(180deg,#070c13 0%,var(--bg) 100%);
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35;
+  background-image:linear-gradient(rgba(94,242,178,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(94,242,178,.035) 1px,transparent 1px);
+  background-size:48px 48px;mask-image:linear-gradient(180deg,#000,transparent 75%);
+}
+a{color:var(--green);text-decoration:none}
+a:hover{color:#a9ffdc}
+[hidden]{display:none!important}
+.shell{position:relative;z-index:1;max-width:1220px;margin:0 auto;padding:28px 22px 56px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-bottom:18px;border-bottom:1px solid rgba(34,53,75,.75)}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--sans);font-weight:700;letter-spacing:-.02em}
+.brand-mark{display:grid;place-items:center;width:34px;height:34px;border-radius:9px;background:linear-gradient(145deg,var(--green),#1f9f78);color:#042018;font-size:18px;box-shadow:0 0 24px rgba(94,242,178,.28)}
+.brand small{display:block;font:400 10px/1.2 var(--mono);color:var(--dim);letter-spacing:.16em;text-transform:uppercase}
+.backlink{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:7px 12px;background:rgba(13,22,34,.7)}
+.backlink:hover{border-color:var(--line2);color:var(--ink)}
+.hero{padding:38px 0 26px;max-width:940px}
+.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--green);display:flex;align-items:center;gap:8px}
+.eyebrow::before{content:"";width:24px;height:1px;background:var(--green)}
+h1{font:800 clamp(34px,5.6vw,66px)/1.02 var(--sans);letter-spacing:-.055em;margin:14px 0 16px}
+h1 em{font-style:normal;color:var(--green);text-shadow:0 0 40px rgba(94,242,178,.25)}
+.lede{max-width:820px;color:var(--muted);font-size:14px;margin:0}
+.lede strong{color:var(--ink);font-weight:600}
+.grid{display:grid;grid-template-columns:344px minmax(0,1fr);gap:18px;align-items:start;margin-top:8px}
+.grid>main,.grid>aside{min-width:0}
+.panel{background:linear-gradient(180deg,rgba(16,29,44,.96),rgba(11,19,30,.96));border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 50px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.02)}
+.controls{padding:18px;position:sticky;top:18px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.panel-head h2{font:700 15px/1.2 var(--sans);letter-spacing:-.01em;margin:0}
+.tag{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:3px 7px}
+.field{display:block;margin-top:15px}
+.field:first-of-type{margin-top:0}
+.field>span,.field-label{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.field-label b{color:var(--green);font-weight:500;letter-spacing:0}
+select,input[type=number]{
+  width:100%;appearance:none;color:var(--ink);background:#0a1420;border:1px solid var(--line2);
+  border-radius:10px;padding:11px 12px;font:13px/1.4 var(--mono);outline:none;transition:border-color .15s,box-shadow .15s
+}
+select{background-image:linear-gradient(45deg,transparent 50%,var(--green) 50%),linear-gradient(135deg,var(--green) 50%,transparent 50%);background-position:calc(100% - 17px) 50%,calc(100% - 12px) 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:34px}
+select:focus,input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(94,242,178,.12)}
+.segmented{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px}
+.segmented button{
+  cursor:pointer;border:1px solid var(--line);border-radius:9px;background:#0a1420;color:var(--muted);
+  padding:8px 6px;font:600 12px/1.25 var(--mono);text-align:center;transition:.15s
+}
+.segmented button small{display:block;font:400 9px/1.4 var(--mono);color:var(--dim);margin-top:2px}
+.segmented button:hover{border-color:var(--line2);color:var(--ink)}
+.segmented button[aria-pressed=true]{background:linear-gradient(160deg,rgba(94,242,178,.18),rgba(94,242,178,.07));border-color:var(--green);color:var(--green);box-shadow:0 0 18px rgba(94,242,178,.1)}
+.segmented button[aria-pressed=true] small{color:rgba(94,242,178,.7)}
+.custom-box{margin-top:10px;padding:10px;border:1px dashed var(--line2);border-radius:10px;background:rgba(88,215,255,.04)}
+.custom-box label{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.hint{font-size:10px;line-height:1.55;color:var(--dim);margin:8px 0 0}
+.kv-dtype{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:15px;padding:9px 10px;border:1px solid var(--line);border-radius:9px;background:#0a1420;font-size:10px;color:var(--muted)}
+.kv-dtype b{color:var(--cyan);font-weight:600}
+.reset{margin-top:16px;width:100%;cursor:pointer;border:1px solid var(--line);border-radius:9px;background:transparent;color:var(--dim);padding:9px;font:11px var(--mono)}
+.reset:hover{border-color:var(--line2);color:var(--ink)}
+.result{padding:20px}
+.result-top{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.result-label{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.total{display:flex;align-items:baseline;gap:8px;margin:5px 0 2px}
+.total strong{font:800 clamp(46px,7vw,74px)/.95 var(--sans);letter-spacing:-.06em;color:var(--green);text-shadow:0 0 38px rgba(94,242,178,.22)}
+.total span{font:600 15px var(--mono);color:var(--muted)}
+.formula{font-size:11px;color:var(--dim);max-width:540px}
+.fit-callout{min-width:240px;max-width:360px;padding:12px 14px;border:1px solid rgba(94,242,178,.32);border-radius:11px;background:linear-gradient(145deg,rgba(94,242,178,.1),rgba(88,215,255,.05))}
+.fit-callout small{display:block;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.fit-callout strong{font:700 17px/1.3 var(--sans);display:block}
+.fit-callout span{font-size:10px;color:var(--green)}
+.chart{margin-top:20px}
+.bar{display:flex;height:38px;border-radius:9px;overflow:hidden;border:1px solid #1b2b3e;background:#08111b}
+.bar-seg{display:flex;align-items:center;justify-content:center;min-width:0;font:600 9px/1 var(--mono);color:#03110c;white-space:nowrap;overflow:hidden;transition:width .3s ease}
+.bar-seg.weights{background:linear-gradient(180deg,#69ffc2,#35c995)}
+.bar-seg.kv{background:linear-gradient(180deg,#7ee3ff,#31a9cf)}
+.bar-seg.cuda{background:linear-gradient(180deg,#ffd68a,#dba344)}
+.bar-seg.reserve{background:linear-gradient(180deg,#bca8ff,#8970dc);color:#0c061e}
+.legend{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.legend div{padding:8px 9px;border:1px solid var(--line);border-radius:8px;background:rgba(8,17,27,.75)}
+.legend i{display:block;width:7px;height:7px;border-radius:2px;margin-bottom:5px}
+.legend small{display:block;font-size:9px;color:var(--dim);letter-spacing:.04em}
+.legend b{display:block;font-size:11px;color:var(--ink);font-weight:600;margin-top:1px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.kpi{padding:10px 11px;border:1px solid var(--line);border-radius:9px;background:#0a1420}
+.kpi small{display:block;font-size:9px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase}
+.kpi b{display:block;font-size:14px;color:var(--ink);font-weight:600;margin-top:2px}
+.mla{margin-top:12px;padding:12px 14px;border:1px solid rgba(182,156,255,.35);border-radius:10px;background:linear-gradient(120deg,rgba(182,156,255,.1),rgba(88,215,255,.045))}
+.mla strong{font:700 13px var(--sans);color:#d8caff}
+.mla p{margin:4px 0 0;font-size:11px;color:var(--muted)}
+.mla b{color:var(--violet)}
+.section{padding:18px;margin-top:18px}
+.section h2{font:700 17px/1.3 var(--sans);letter-spacing:-.02em;margin:0}
+.section .sub{font-size:11px;color:var(--dim);margin:3px 0 14px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px;background:#08111b}
+table{width:100%;border-collapse:collapse;min-width:620px}
+th{text-align:left;font:600 9px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);padding:10px 12px;background:#0a1522;border-bottom:1px solid var(--line)}
+td{padding:12px;border-bottom:1px solid rgba(34,53,75,.7);vertical-align:top;font-size:11px}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:rgba(88,215,255,.035)}
+td strong{display:block;font:600 12px/1.35 var(--sans);color:var(--ink)}
+td small{display:block;font-size:9px;line-height:1.5;color:var(--dim);margin-top:2px}
+.cards{font:800 22px/1 var(--sans);letter-spacing:-.04em;color:var(--green);display:block}
+.cards small{font:400 9px var(--mono);letter-spacing:0}
+.pill{display:inline-block;font:600 9px/1.4 var(--mono);padding:3px 7px;border-radius:999px;border:1px solid;white-space:nowrap}
+.pill.ok{color:var(--green);border-color:rgba(94,242,178,.45);background:rgba(94,242,178,.08)}
+.pill.warn{color:var(--amber);border-color:rgba(255,198,109,.45);background:rgba(255,198,109,.08)}
+.pill.danger{color:var(--red);border-color:rgba(255,113,133,.45);background:rgba(255,113,133,.08)}
+.alert{display:grid;grid-template-columns:34px 1fr;gap:11px;margin-top:12px;padding:12px 14px;border:1px solid var(--line2);border-radius:11px;background:#0a1420}
+.alert .dot{display:grid;place-items:center;width:34px;height:34px;border-radius:9px;font-size:15px;background:rgba(88,215,255,.1);border:1px solid rgba(88,215,255,.3)}
+.alert strong{font:700 12px var(--sans);display:block}
+.alert p{margin:2px 0 0;font-size:10px;color:var(--muted)}
+.alert.ok{border-color:rgba(94,242,178,.32);background:rgba(94,242,178,.055)}
+.alert.ok .dot{background:rgba(94,242,178,.1);border-color:rgba(94,242,178,.3)}
+.alert.warn{border-color:rgba(255,198,109,.34);background:rgba(255,198,109,.05)}
+.alert.warn .dot{background:rgba(255,198,109,.1);border-color:rgba(255,198,109,.3)}
+.alert.danger{border-color:rgba(255,113,133,.4);background:rgba(255,113,133,.055)}
+.alert.danger .dot{background:rgba(255,113,133,.1);border-color:rgba(255,113,133,.3)}
+.fixed-note{font-size:10px;color:var(--dim);margin:10px 0 0;padding-left:2px}
+.price{font:700 17px/1.2 var(--sans);letter-spacing:-.02em;color:var(--ink);white-space:nowrap}
+td.low .price{color:var(--green)}
+.warnbadge{display:inline-block;margin-top:5px;font:600 8px/1.4 var(--mono);letter-spacing:.03em;color:var(--amber);border:1px solid rgba(255,198,109,.4);border-radius:999px;padding:2px 6px;background:rgba(255,198,109,.08)}
+.lowbadge{display:inline-block;font:600 8px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--green);border:1px solid rgba(94,242,178,.4);border-radius:999px;padding:2px 6px;background:rgba(94,242,178,.08)}
+.ledger-note{display:flex;gap:10px;align-items:flex-start;margin-top:10px;padding:10px 12px;border:1px solid rgba(255,198,109,.3);border-radius:9px;background:rgba(255,198,109,.045);font-size:10px;color:var(--muted)}
+.ledger-note b{color:var(--amber);white-space:nowrap}
+.cta{margin-top:18px;padding:22px;border:1px solid rgba(94,242,178,.3);border-radius:16px;background:
+  radial-gradient(600px 220px at 50% 0,rgba(94,242,178,.13),transparent 70%),
+  linear-gradient(180deg,#0e1d27,#0a1420)}
+.cta h2{font:800 clamp(22px,3.4vw,32px)/1.1 var(--sans);letter-spacing:-.04em;margin:0}
+.cta p{color:var(--muted);font-size:12px;max-width:760px;margin:8px 0 16px}
+.cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cta-btn{display:block;padding:14px 16px;border-radius:11px;font:700 15px/1.25 var(--sans);letter-spacing:-.01em;transition:transform .15s,box-shadow .15s,background .15s;border:1px solid}
+.cta-btn small{display:block;font:400 9px/1.5 var(--mono);letter-spacing:0;margin-top:3px;opacity:.8}
+.cta-btn:hover{transform:translateY(-1px)}
+.cta-btn.runpod{color:#04140f;background:linear-gradient(135deg,#69ffc2,#2bd391);border-color:#8affd0;box-shadow:0 10px 34px rgba(43,211,145,.22)}
+.cta-btn.runpod:hover{background:linear-gradient(135deg,#8affd0,#3ae3a0);color:#04140f}
+.cta-btn.vastai{color:#eaf4ff;background:linear-gradient(135deg,#1a3b56,#12283d);border-color:#3d6d94;box-shadow:0 10px 34px rgba(88,215,255,.1)}
+.cta-btn.vastai:hover{background:linear-gradient(135deg,#245172,#17334d);color:#fff}
+.ftc{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:10px;line-height:1.65;color:var(--dim)}
+.ftc strong{color:var(--muted)}
+footer{margin-top:26px;padding-top:16px;border-top:1px solid var(--line);font-size:10px;color:var(--dim)}
+footer p{margin:5px 0}
+footer a{color:var(--muted)}
+footer a:hover{color:var(--green)}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:900px){
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .controls{position:static}
+  .legend,.kpis{grid-template-columns:1fr 1fr}
+  .result-top{display:block}
+  .fit-callout{margin-top:14px;max-width:none}
+}
+@media(max-width:560px){
+  .shell{padding:20px 13px 40px}
+  .cta-grid{grid-template-columns:1fr}
+  .legend,.kpis{grid-template-columns:1fr 1fr}
+  .bar{height:34px}
+  .bar-seg{font-size:0}
+}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">◈</span><span>GPU SIZING LAB<small>Static · Zero dependency · 2026</small></span></div>
+    <a class="backlink" href="https://gpu.mybskm.top/">← Live price dashboard</a>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">VRAM fit · KV cache · NVLink · rental ledger</div>
+    <h1>Fit the model.<br><em>Price the silicon.</em></h1>
+    <p class="lede">A conservative, transparent sizing model for LLM inference. It counts <strong>all weights</strong>, <strong>KV cache at your real concurrency</strong>, <strong>2 GiB CUDA/runtime overhead</strong>, and a <strong>15% safety margin</strong> — then prices the exact card count on RunPod and Vast.ai. DeepSeek V3/R1 uses its native <strong>MLA latent cache</strong>, not a naive MHA blow-up.</p>
+  </section>
+
+  <div class="grid">
+    <aside class="panel controls" aria-label="Calculator inputs">
+      <div class="panel-head"><h2>Model &amp; workload</h2><span class="tag">Live</span></div>
+
+      <label class="field" for="model"><span>Model</span>
+        <select id="model">
+          <option value="llama31-8b">Llama 3.1 8B</option>
+          <option value="llama33-70b" selected>Llama 3.3 70B</option>
+          <option value="qwen25-72b">Qwen 2.5 72B</option>
+          <option value="deepseek-v3">DeepSeek V3 / R1 671B MoE</option>
+          <option value="custom">Custom parameter count…</option>
+        </select>
+      </label>
+      <div class="custom-box" id="custom-wrap" hidden>
+        <label for="custom-params">Custom total parameters (billions)</label>
+        <input id="custom-params" type="number" min="0.1" max="2000" step="0.1" value="70" inputmode="decimal">
+        <p class="hint">Dense GQA approximation: 8 KV heads, 128-dim heads, layer count scaled from 32 layers at 8B. MoE custom models should use the total parameter count.</p>
+      </div>
+
+      <div class="field"><span class="field-label">Weight precision <b id="precision-bytes">2 bytes/param</b></span>
+        <div class="segmented" id="precision" role="group" aria-label="Weight precision">
+          <button type="button" data-value="bf16" aria-pressed="true">BF16<small>2 B</small></button>
+          <button type="button" data-value="fp8" aria-pressed="false">FP8<small>1 B</small></button>
+          <button type="button" data-value="int4" aria-pressed="false">INT4<small>0.5 B</small></button>
+        </div>
+      </div>
+
+      <label class="field" for="context"><span>Context window <b id="ctx-tokens">4,096 tokens</b></span>
+        <select id="context">
+          <option value="4096" selected>4k · 4,096 tokens</option>
+          <option value="8192">8k · 8,192 tokens</option>
+          <option value="32768">32k · 32,768 tokens</option>
+          <option value="131072">128k · 131,072 tokens</option>
+        </select>
+      </label>
+
+      <div class="field"><span class="field-label">Concurrent sequences <b id="conc-value">1×</b></span>
+        <div class="segmented" id="concurrency" role="group" aria-label="Concurrent sequences">
+          <button type="button" data-value="1" aria-pressed="true">1</button>
+          <button type="button" data-value="4" aria-pressed="false">4</button>
+          <button type="button" data-value="16" aria-pressed="false">16</button>
+          <button type="button" data-value="64" aria-pressed="false">64</button>
+        </div>
+      </div>
+
+      <div class="kv-dtype"><span>KV cache dtype</span><b>BF16 · 2 bytes</b></div>
+      <p class="hint">KV cache is kept in BF16 even when weights are FP8/INT4. Quantized KV can save memory but changes accuracy and is not assumed here.</p>
+      <button class="reset" id="reset" type="button">Reset to 70B · BF16 · 4k · 1×</button>
+    </aside>
+
+    <main>
+      <section class="panel result" aria-live="polite">
+        <div class="result-top">
+          <div>
+            <div class="result-label">Estimated VRAM requirement</div>
+            <div class="total"><strong id="total-vram">154.97</strong><span>GiB</span></div>
+            <div class="formula" id="formula-line">(131.50 weights + 1.25 KV + 2.00 CUDA) × 1.15</div>
+          </div>
+          <div class="fit-callout">
+            <small>Topology-safe best fit</small>
+            <strong id="best-fit">4× A100 80GB SXM</strong>
+            <span id="best-price">Vast.ai · $3.96/hr</span>
+          </div>
+        </div>
+
+        <div class="chart">
+          <div class="bar" role="img" aria-label="VRAM breakdown bar" id="vram-bar">
+            <span class="bar-seg weights" id="seg-weights" style="width:84.9%">Weights</span>
+            <span class="bar-seg kv" id="seg-kv" style="width:0.8%"></span>
+            <span class="bar-seg cuda" id="seg-cuda" style="width:1.3%"></span>
+            <span class="bar-seg reserve" id="seg-reserve" style="width:13%">15% safety</span>
+          </div>
+          <div class="legend">
+            <div><i style="background:var(--green)"></i><small>Weights</small><b id="legend-weights">131.50 GiB</b></div>
+            <div><i style="background:var(--cyan)"></i><small>KV cache</small><b id="legend-kv">1.25 GiB</b></div>
+            <div><i style="background:var(--amber)"></i><small>CUDA / runtime</small><b id="legend-cuda">2.00 GiB</b></div>
+            <div><i style="background:var(--violet)"></i><small>15% safety reserve</small><b id="legend-reserve">20.22 GiB</b></div>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><small>KV / token</small><b id="kpi-kvtoken">320.00 KiB</b></div>
+            <div class="kpi"><small>KV total</small><b id="kpi-kvtotal">1.25 GiB</b></div>
+            <div class="kpi"><small>Sequences</small><b id="kpi-seq">1</b></div>
+            <div class="kpi"><small>Subtotal before 15%</small><b id="kpi-subtotal">134.75 GiB</b></div>
+          </div>
+          <div class="mla" id="mla-box" hidden>
+            <strong>DeepSeek MLA compression is doing the heavy lifting</strong>
+            <p>A naive MHA cache at this shape would need <b id="mla-naive">15.25 GiB</b>; the MLA latent cache needs <b id="mla-real">0.27 GiB</b> — about <b id="mla-ratio">56.9×</b> less. That is why 671B FP8 can fit on 8× H200 instead of a 16-GPU memory wall.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel section">
+        <h2>GPU fit &amp; NVLink topology</h2>
+        <p class="sub">Raw fit assumes at most 90% of card VRAM is usable by the model. Multi-GPU counts round up to 2/4/8 for tensor-parallel symmetry.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">GPU</th><th scope="col">Raw fit</th><th scope="col">Recommended</th><th scope="col">Headroom</th><th scope="col">Topology</th></tr></thead>
+            <tbody id="gpu-body"></tbody>
+          </table>
+        </div>
+        <div class="alert" id="topo-alert" role="status">
+          <div class="dot" id="topo-icon">⚡</div>
+          <div><strong id="topo-title">Topology check</strong><p id="topo-text"></p></div>
+        </div>
+        <p class="fixed-note">Fixed fact: RTX 4090 and L40S have no NVLink. Multi-GPU tensor parallel on those cards all-reduces over PCIe and can lose most of the scaling. A100/H100/H200 SXM use NVLink; one NVLink domain is typically 8 GPUs, beyond which InfiniBand and pipeline parallelism matter.</p>
+      </section>
+
+      <section class="panel section">
+        <h2>RunPod vs Vast.ai ledger</h2>
+        <p class="sub">Compute-only estimates for the recommended card count. Sampled 2026-10-18; not a live quote, reservation or guarantee. Storage, network, tax and idle time are extra.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Recommended setup</th><th scope="col">RunPod</th><th scope="col">Vast.ai</th><th scope="col">Lower sampled rate</th></tr></thead>
+            <tbody id="price-body"></tbody>
+          </table>
+        </div>
+        <div class="ledger-note"><b>2-card bundle trap</b><span id="bundle-note">Some Vast.ai marketplace offers are rentable only as a 2-GPU bundle. The ledger charges the whole bundle, so a 1-GPU requirement can cost 2× the per-GPU rate. Check <code>num_gpus</code> before launching.</span></div>
+      </section>
+
+      <section class="cta" aria-label="Rent the recommended GPUs">
+        <div class="eyebrow">Next step</div>
+        <h2>Take this card count to a provider.</h2>
+        <p id="cta-summary">The buttons carry <code>utm_source=gpu_calculator</code> and your current best-fit card count. Verify the live hourly rate and the bundle size before you confirm a rental.</p>
+        <div class="cta-grid">
+          <a class="cta-btn runpod" id="cta-runpod" href="https://go.272738.xyz/runpod?utm_source=gpu_calculator&amp;utm_medium=cta&amp;utm_campaign=vram_fit" rel="sponsored noopener noreferrer">Rent on RunPod ↗<small>Community/secure catalog · verify inventory</small></a>
+          <a class="cta-btn vastai" id="cta-vast" href="https://go.272738.xyz/vastai?utm_source=gpu_calculator&amp;utm_medium=cta&amp;utm_campaign=vram_fit" rel="sponsored noopener noreferrer">Browse Vast.ai offers ↗<small>Check GPU count and bundle before launch</small></a>
+        </div>
+        <p class="ftc"><strong>Affiliate disclosure (FTC 16 CFR Part 255):</strong> We may earn a commission when you sign up or rent through the RunPod or Vast.ai links on this page, at no additional cost to you. This does not change the calculated VRAM requirement or the sampled rates shown. Providers set their own prices, availability and terms; verify everything on the provider page before paying. No rental or inference is performed by this calculator.</p>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <p><strong>Method:</strong> weights = total parameters × bytes/parameter. GQA KV = 2 × layers × KV heads × head dim × 2 bytes × tokens × concurrent sequences. DeepSeek MLA KV = layers × (512 latent + 64 RoPE) × 2 bytes × tokens × sequences. Total = (weights + KV + 2 GiB CUDA) × 1.15. All memory units are GiB (2³⁰ bytes) unless labeled GB.</p>
+    <p><strong>Limits:</strong> no activation peak, fragmentation, tensor-parallel sharding overhead, expert routing buffers, CUDA graphs or allocator slack beyond the 15% margin. Long-context prefill and training need more. This is a planning tool, not a deployment guarantee.</p>
+    <p><a href="https://gpu.mybskm.top/">← Back to the live GPU / API price dashboard</a> · <a href="https://gpu.mybskm.top/calculator/">Permanent calculator URL</a></p>
+  </footer>
+</div>
+
+<script id="calc-core">
+(function(root){
+'use strict';
+
+var GIB = 1073741824;
+var SAFETY_MARGIN = 1.15;
+var CUDA_OVERHEAD_GIB = 2;
+var PRACTICAL_VRAM_UTILIZATION = 0.90;
+var KV_DTYPE_BYTES = 2;
+var CONTEXT_OPTIONS = [4096, 8192, 32768, 131072];
+var CONCURRENCY_OPTIONS = [1, 4, 16, 64];
+
+var PRECISIONS = {
+  bf16: {label: 'BF16', bytes: 2},
+  fp8:  {label: 'FP8',  bytes: 1},
+  int4: {label: 'INT4', bytes: 0.5}
+};
+
+var MODELS = {
+  'llama31-8b': {
+    id: 'llama31-8b', label: 'Llama 3.1 8B', paramsB: 8.03,
+    layers: 32, hidden: 4096, kvHeads: 8, headDim: 128, arch: 'gqa',
+    note: 'Dense GQA; 8 KV heads, 128-dim heads, 32 layers.'
+  },
+  'llama33-70b': {
+    id: 'llama33-70b', label: 'Llama 3.3 70B', paramsB: 70.6,
+    layers: 80, hidden: 8192, kvHeads: 8, headDim: 128, arch: 'gqa',
+    note: 'Dense GQA; 8 KV heads, 128-dim heads, 80 layers.'
+  },
+  'qwen25-72b': {
+    id: 'qwen25-72b', label: 'Qwen 2.5 72B', paramsB: 72.7,
+    layers: 80, hidden: 8192, kvHeads: 8, headDim: 128, arch: 'gqa',
+    note: 'Dense GQA; 8 KV heads, 128-dim heads, 80 layers.'
+  },
+  'deepseek-v3': {
+    id: 'deepseek-v3', label: 'DeepSeek V3 / R1 671B MoE', paramsB: 671,
+    layers: 61, hidden: 7168, kvHeads: 128, headDim: 128, arch: 'mla',
+    kvLoraRank: 512, qkRopeHeadDim: 64, activeB: 37,
+    note: 'MLA latent KV: 512 + 64 dims per layer. All 671B parameters stay resident; 37B active only reduces compute, not memory.'
+  },
+  'custom': {
+    id: 'custom', label: 'Custom model', paramsB: 70,
+    layers: 66, hidden: 8448, kvHeads: 8, headDim: 128, arch: 'gqa',
+    note: 'Custom dense GQA approximation (8 KV heads, 128-dim heads).'
+  }
+};
+
+var GPUS = [
+  {
+    id: '4090', label: 'RTX 4090', vram: 24, nvlink: false, interconnect: 'PCIe 4.0 x16',
+    pricing: {
+      runpod: {usdPerGpuHour: 0.34, tier: 'Community catalog', bundle: 1, sampleAt: '2026-10-18'},
+      vast:   {usdPerGpuHour: 0.429, tier: 'Verified on-demand sample', bundle: 2, sampleAt: '2026-10-18'}
+    }
+  },
+  {
+    id: 'l40s', label: 'L40S', vram: 48, nvlink: false, interconnect: 'PCIe 4.0 x16',
+    pricing: {
+      runpod: {usdPerGpuHour: 0.79, tier: 'Community catalog', bundle: 1, sampleAt: '2026-10-18'},
+      vast:   {usdPerGpuHour: 0.801, tier: 'Verified on-demand sample', bundle: 1, sampleAt: '2026-10-18'}
+    }
+  },
+  {
+    id: 'a100', label: 'A100 80GB SXM', vram: 80, nvlink: true, interconnect: 'NVLink / SXM4',
+    pricing: {
+      runpod: {usdPerGpuHour: 1.39, tier: 'Community catalog', bundle: 1, sampleAt: '2026-10-18'},
+      vast:   {usdPerGpuHour: 0.989, tier: 'Verified on-demand sample', bundle: 1, sampleAt: '2026-10-18'}
+    }
+  },
+  {
+    id: 'h100', label: 'H100 80GB SXM', vram: 80, nvlink: true, interconnect: 'NVLink / SXM5',
+    pricing: {
+      runpod: {usdPerGpuHour: 2.69, tier: 'Community catalog', bundle: 1, sampleAt: '2026-10-18'},
+      vast:   {usdPerGpuHour: 2.01, tier: 'Verified on-demand sample', bundle: 1, sampleAt: '2026-10-18'}
+    }
+  },
+  {
+    id: 'h200', label: 'H200 141GB SXM', vram: 141, nvlink: true, interconnect: 'NVLink / SXM',
+    pricing: {
+      runpod: {usdPerGpuHour: 3.59, tier: 'Community catalog', bundle: 1, sampleAt: '2026-10-18'},
+      vast:   {usdPerGpuHour: 3.274, tier: 'Verified H200 NVL sample (140 GB)', bundle: 1, sampleAt: '2026-10-18'}
+    }
+  }
+];
+
+function customShape(paramsB) {
+  var p = Number(paramsB);
+  if (!isFinite(p) || p <= 0) p = 70;
+  p = Math.max(0.1, Math.min(2000, p));
+  var scale = Math.cbrt(p / 8);
+  var layers = Math.max(16, Math.min(96, Math.round(32 * scale)));
+  var hidden = Math.max(2048, Math.min(16384, Math.round(4096 * scale / 128) * 128));
+  return {paramsB: p, layers: layers, hidden: hidden, kvHeads: 8, headDim: 128, arch: 'gqa'};
+}
+
+function resolveModel(input) {
+  input = input || {};
+  var id = input.model || 'llama33-70b';
+  if (id === 'custom') {
+    var shape = customShape(input.customParamsB);
+    return {
+      id: 'custom', label: 'Custom ' + shape.paramsB + 'B', paramsB: shape.paramsB,
+      layers: shape.layers, hidden: shape.hidden, kvHeads: shape.kvHeads, headDim: shape.headDim,
+      arch: 'gqa', note: 'Custom dense GQA approximation; 8 KV heads, 128-dim heads.'
+    };
+  }
+  return MODELS[id] || MODELS['llama33-70b'];
+}
+
+function kvBytesPerToken(model) {
+  if (model.arch === 'mla') {
+    return model.layers * (model.kvLoraRank + model.qkRopeHeadDim) * KV_DTYPE_BYTES;
+  }
+  return 2 * model.layers * model.kvHeads * model.headDim * KV_DTYPE_BYTES;
+}
+
+function topology(gpu, cards) {
+  if (cards <= 1) {
+    return {
+      level: 'ok', badge: 'Single GPU',
+      text: 'One card means no inter-GPU all-reduce. You still need the full ' + gpu.vram + ' GB of VRAM and room for the CUDA context.'
+    };
+  }
+  if (!gpu.nvlink) {
+    return {
+      level: 'danger', badge: 'PCIe bottleneck',
+      text: cards + '× ' + gpu.label + ' have no NVLink. Tensor-parallel layers must all-reduce over PCIe, so multi-GPU scaling can collapse. Prefer one larger SXM card, fewer cards, or pipeline parallelism if you accept the latency.'
+    };
+  }
+  if (cards > 8) {
+    return {
+      level: 'warn', badge: 'Multi-node',
+      text: cards + ' GPUs exceed one 8-GPU NVLink domain. You will cross nodes, so plan for InfiniBand/RoCE, a hybrid tensor+pipeline parallel layout and a real interconnect benchmark before promising latency.'
+    };
+  }
+  return {
+    level: 'ok', badge: 'NVLink',
+    text: cards + '× ' + gpu.label + ' fit inside one NVLink domain. Keep tensor parallelism at or below 8 and pin the processes to one node; check the provider actually exposes the NVLink bridge.'
+  };
+}
+
+function quote(offer, cards, gpu) {
+  var bundle = offer.bundle || 1;
+  var billedCards = Math.ceil(cards / bundle) * bundle;
+  var hourly = billedCards * offer.usdPerGpuHour;
+  return {
+    provider: offer.provider,
+    usdPerGpuHour: offer.usdPerGpuHour,
+    tier: offer.tier,
+    sampleAt: offer.sampleAt,
+    bundle: bundle,
+    billedCards: billedCards,
+    wastedCards: billedCards - cards,
+    hourly: hourly,
+    day: hourly * 24,
+    month: hourly * 720
+  };
+}
+
+function recommend(gpu, totalGiB) {
+  var usablePerCard = gpu.vram * PRACTICAL_VRAM_UTILIZATION;
+  var rawCards = Math.max(1, Math.ceil(totalGiB / usablePerCard - 1e-9));
+  var cards = rawCards <= 1 ? 1 : Math.pow(2, Math.ceil(Math.log2(rawCards)));
+  var capacityGiB = cards * gpu.vram;
+  var headroomPct = (capacityGiB - totalGiB) / capacityGiB * 100;
+  var runpodOffer = Object.assign({provider: 'RunPod'}, gpu.pricing.runpod);
+  var vastOffer = Object.assign({provider: 'Vast.ai'}, gpu.pricing.vast);
+  return {
+    id: gpu.id, label: gpu.label, vram: gpu.vram, nvlink: gpu.nvlink,
+    interconnect: gpu.interconnect, rawCards: rawCards, cards: cards,
+    capacityGiB: capacityGiB, headroomPct: headroomPct,
+    topology: topology(gpu, cards),
+    runpod: quote(runpodOffer, cards, gpu),
+    vast: quote(vastOffer, cards, gpu)
+  };
+}
+
+function compute(input) {
+  input = input || {};
+  var model = resolveModel(input);
+  var precision = PRECISIONS[input.precision] || PRECISIONS.bf16;
+  var context = CONTEXT_OPTIONS.indexOf(Number(input.context)) >= 0 ? Number(input.context) : 4096;
+  var concurrency = CONCURRENCY_OPTIONS.indexOf(Number(input.concurrency)) >= 0 ? Number(input.concurrency) : 1;
+
+  var weightsGiB = model.paramsB * 1e9 * precision.bytes / GIB;
+  var kvPerTokenBytes = kvBytesPerToken(model);
+  var kvGiB = kvPerTokenBytes * context * concurrency / GIB;
+  var runtimeGiB = CUDA_OVERHEAD_GIB;
+  var subtotalGiB = weightsGiB + kvGiB + runtimeGiB;
+  var totalGiB = subtotalGiB * SAFETY_MARGIN;
+  var reserveGiB = totalGiB - subtotalGiB;
+  var naiveMhaKvGiB = 2 * model.layers * model.kvHeads * model.headDim * KV_DTYPE_BYTES * context * concurrency / GIB;
+
+  var gpus = GPUS.map(function(gpu) { return recommend(gpu, totalGiB); });
+  return {
+    model: model, precision: precision, context: context, concurrency: concurrency,
+    weightsGiB: weightsGiB, kvPerTokenBytes: kvPerTokenBytes, kvGiB: kvGiB,
+    runtimeGiB: runtimeGiB, subtotalGiB: subtotalGiB, totalGiB: totalGiB,
+    reserveGiB: reserveGiB, naiveMhaKvGiB: naiveMhaKvGiB,
+    mlaSavingX: model.arch === 'mla' ? naiveMhaKvGiB / kvGiB : null,
+    gpus: gpus
+  };
+}
+
+root.GPU_CALC = Object.freeze({
+  MODELS: MODELS,
+  PRECISIONS: PRECISIONS,
+  GPUS: GPUS,
+  CONSTANTS: {
+    GIB: GIB,
+    SAFETY_MARGIN: SAFETY_MARGIN,
+    CUDA_OVERHEAD_GIB: CUDA_OVERHEAD_GIB,
+    PRACTICAL_VRAM_UTILIZATION: PRACTICAL_VRAM_UTILIZATION,
+    KV_DTYPE_BYTES: KV_DTYPE_BYTES
+  },
+  CONTEXT_OPTIONS: CONTEXT_OPTIONS,
+  CONCURRENCY_OPTIONS: CONCURRENCY_OPTIONS,
+  compute: compute,
+  resolveModel: resolveModel,
+  customShape: customShape,
+  kvBytesPerToken: kvBytesPerToken,
+  recommend: recommend,
+  topology: topology,
+  quote: quote
+});
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+
+<script id="calc-app">
+(function(){
+'use strict';
+var C = window.GPU_CALC;
+if (!C) return;
+var $ = function(id){ return document.getElementById(id); };
+var state = {model: 'llama33-70b', precision: 'bf16', context: 4096, concurrency: 1, customParamsB: 70};
+var RUNPOD_BASE = 'https://go.272738.xyz/runpod';
+var VAST_BASE = 'https://go.272738.xyz/vastai';
+
+function fmt(n, d) {
+  d = (d === undefined) ? 2 : d;
+  return Number(n).toLocaleString('en-US', {minimumFractionDigits: d, maximumFractionDigits: d});
+}
+function usd(n) { return '$' + fmt(n, 2); }
+function gib(n) { return fmt(n, 2) + ' GiB'; }
+function pct(n) { return fmt(n, 1) + '%'; }
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+
+function setPressed(containerId, value) {
+  var buttons = document.querySelectorAll('#' + containerId + ' button[data-value]');
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].setAttribute('aria-pressed', String(buttons[i].getAttribute('data-value') === String(value)));
+  }
+}
+
+function ctaUrl(base, gpu, cards) {
+  return base + '?utm_source=gpu_calculator&utm_medium=cta&utm_campaign=vram_fit&utm_content=' +
+    encodeURIComponent(cards + 'x_' + gpu.id);
+}
+
+function render() {
+  var r = C.compute(state);
+  var t = r.totalGiB;
+  var weightsPct = r.weightsGiB / t * 100;
+  var kvPct = r.kvGiB / t * 100;
+  var cudaPct = r.runtimeGiB / t * 100;
+  var reservePct = r.reserveGiB / t * 100;
+
+  $('total-vram').textContent = fmt(t, 2);
+  $('formula-line').textContent = '(' + fmt(r.weightsGiB) + ' GiB weights + ' +
+    fmt(r.kvGiB) + ' GiB KV + ' + fmt(r.runtimeGiB) + ' GiB CUDA) × 1.15 = ' + fmt(t) + ' GiB';
+
+  $('seg-weights').style.width = weightsPct.toFixed(3) + '%';
+  $('seg-kv').style.width = kvPct.toFixed(3) + '%';
+  $('seg-cuda').style.width = cudaPct.toFixed(3) + '%';
+  $('seg-reserve').style.width = reservePct.toFixed(3) + '%';
+  $('seg-weights').title = 'Weights: ' + gib(r.weightsGiB) + ' (' + pct(weightsPct) + ')';
+  $('seg-kv').title = 'KV cache: ' + gib(r.kvGiB) + ' (' + pct(kvPct) + ')';
+  $('seg-cuda').title = 'CUDA/runtime: ' + gib(r.runtimeGiB) + ' (' + pct(cudaPct) + ')';
+  $('seg-reserve').title = '15% safety reserve: ' + gib(r.reserveGiB) + ' (' + pct(reservePct) + ')';
+  $('seg-weights').textContent = weightsPct >= 10 ? 'Weights ' + pct(weightsPct) : 'W';
+  $('seg-kv').textContent = kvPct >= 8 ? 'KV ' + pct(kvPct) : '';
+  $('seg-cuda').textContent = cudaPct >= 8 ? 'CUDA ' + pct(cudaPct) : '';
+  $('seg-reserve').textContent = reservePct >= 8 ? '15% safety' : '';
+
+  $('legend-weights').textContent = gib(r.weightsGiB);
+  $('legend-kv').textContent = gib(r.kvGiB);
+  $('legend-cuda').textContent = gib(r.runtimeGiB);
+  $('legend-reserve').textContent = gib(r.reserveGiB);
+  $('kpi-kvtoken').textContent = fmt(r.kvPerTokenBytes / 1024, 2) + ' KiB';
+  $('kpi-kvtotal').textContent = gib(r.kvGiB);
+  $('kpi-seq').textContent = fmt(r.concurrency, 0) + ' × ' + fmt(r.context, 0) + ' tokens';
+  $('kpi-subtotal').textContent = gib(r.subtotalGiB);
+
+  if (r.model.arch === 'mla') {
+    $('mla-box').hidden = false;
+    $('mla-naive').textContent = gib(r.naiveMhaKvGiB);
+    $('mla-real').textContent = gib(r.kvGiB);
+    $('mla-ratio').textContent = fmt(r.mlaSavingX, 1) + '×';
+  } else {
+    $('mla-box').hidden = true;
+  }
+
+  var topologyRank = {ok: 0, warn: 1, danger: 2};
+  var cheapest = null;
+  for (var i = 0; i < r.gpus.length; i++) {
+    var g = r.gpus[i];
+    var gBest = Math.min(g.runpod.hourly, g.vast.hourly);
+    var rank = topologyRank[g.topology.level];
+    if (!cheapest || rank < cheapest.rank || (rank === cheapest.rank && gBest < cheapest.price)) {
+      cheapest = {gpu: g, price: gBest, rank: rank, provider: g.runpod.hourly <= g.vast.hourly ? 'RunPod' : 'Vast.ai'};
+    }
+  }
+
+  $('best-fit').textContent = cheapest.gpu.cards + '× ' + cheapest.gpu.label;
+  $('best-price').textContent = cheapest.provider + ' · ' + usd(cheapest.price) + '/hr';
+
+  $('gpu-body').innerHTML = r.gpus.map(function(g){
+    var rawLabel = g.rawCards === g.cards ? String(g.rawCards) : g.rawCards + ' → ' + g.cards;
+    var pillClass = g.topology.level;
+    var icon = g.topology.level === 'ok' ? '✓' : (g.topology.level === 'warn' ? '!' : '×');
+    return '<tr>' +
+      '<td><strong>' + esc(g.label) + '</strong><small>' + esc(g.vram) + ' GB · ' + esc(g.interconnect) + '</small></td>' +
+      '<td><strong>' + rawLabel + '</strong><small>at 90% usable VRAM</small></td>' +
+      '<td><span class="cards">' + g.cards + '×</span><small>' + esc(g.capacityGiB) + ' GB pool</small></td>' +
+      '<td><strong>' + pct(g.headroomPct) + '</strong><small>' + fmt(g.capacityGiB - t, 1) + ' GiB spare</small></td>' +
+      '<td><span class="pill ' + pillClass + '">' + icon + ' ' + esc(g.topology.badge) + '</span><small>' + esc(g.nvlink ? 'NVLink-capable' : 'PCIe only') + '</small></td>' +
+    '</tr>';
+  }).join('');
+
+  $('topo-alert').className = 'alert ' + cheapest.gpu.topology.level;
+  $('topo-icon').textContent = cheapest.gpu.topology.level === 'ok' ? '✓' : (cheapest.gpu.topology.level === 'warn' ? '!' : '×');
+  $('topo-title').textContent = cheapest.gpu.cards + '× ' + cheapest.gpu.label + ' · ' + cheapest.gpu.topology.badge;
+  $('topo-text').textContent = cheapest.gpu.topology.text;
+
+  var bundleTriggers = [];
+  $('price-body').innerHTML = r.gpus.map(function(g){
+    var rp = g.runpod, vs = g.vast;
+    var low = Math.min(rp.hourly, vs.hourly);
+    var lowName = rp.hourly <= vs.hourly ? 'RunPod' : 'Vast.ai';
+    if (vs.billedCards > g.cards) bundleTriggers.push(g.label + ' (need ' + g.cards + ', billed ' + vs.billedCards + ')');
+    return '<tr>' +
+      '<td><strong>' + g.cards + '× ' + esc(g.label) + '</strong><small>' + esc(g.cards * g.vram) + ' GB total · ' + g.cards + ' GPU' + (g.cards > 1 ? 's' : '') + '</small></td>' +
+      '<td class="' + (low === rp.hourly ? 'low' : '') + '"><span class="price">' + usd(rp.hourly) + '</span><small>' + usd(rp.day) + ' / day · ' + usd(rp.month) + ' / 30d</small><small>' + esc(rp.tier) + ' · ' + rp.billedCards + ' GPU billed</small></td>' +
+      '<td class="' + (low === vs.hourly ? 'low' : '') + '"><span class="price">' + usd(vs.hourly) + '</span><small>' + usd(vs.day) + ' / day · ' + usd(vs.month) + ' / 30d</small><small>' + esc(vs.tier) + ' · ' + vs.billedCards + ' GPU billed</small>' +
+        (vs.billedCards > g.cards ? '<span class="warnbadge">' + vs.bundle + '-GPU bundle: billed ' + vs.billedCards + '</span>' : '') + '</td>' +
+      '<td><span class="lowbadge">' + esc(lowName) + '</span><small>' + usd(low) + '/hr lowest sampled</small></td>' +
+    '</tr>';
+  }).join('');
+
+  $('bundle-note').textContent = bundleTriggers.length ?
+    ('This configuration triggers a bundle charge on: ' + bundleTriggers.join('; ') + '. Vast.ai charges the full rentable bundle even if you need fewer GPUs. Compare the billed total, not the headline per-GPU rate.') :
+    ('No sampled Vast.ai bundle surcharge for the current card counts. Still check num_gpus on the live offer — marketplace bundles change.');
+
+  var bestGpu = cheapest.gpu;
+  $('cta-runpod').href = ctaUrl(RUNPOD_BASE, bestGpu, bestGpu.cards);
+  $('cta-vast').href = ctaUrl(VAST_BASE, bestGpu, bestGpu.cards);
+  $('cta-summary').textContent = 'Current topology-safe best fit: ' + bestGpu.cards + '× ' + bestGpu.label +
+    ' on ' + cheapest.provider + ' at ' + usd(cheapest.price) + '/hr (compute only). The buttons carry utm_source=gpu_calculator and the current card count. Verify the live rate and bundle size before confirming a rental.';
+}
+
+$('model').addEventListener('change', function(e){
+  state.model = e.target.value;
+  $('custom-wrap').hidden = state.model !== 'custom';
+  render();
+});
+$('custom-params').addEventListener('input', function(e){
+  var v = parseFloat(e.target.value);
+  if (isFinite(v) && v > 0) { state.customParamsB = v; render(); }
+});
+$('context').addEventListener('change', function(e){
+  state.context = Number(e.target.value);
+  $('ctx-tokens').textContent = fmt(state.context, 0) + ' tokens';
+  render();
+});
+document.querySelectorAll('#precision button[data-value]').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    state.precision = btn.getAttribute('data-value');
+    setPressed('precision', state.precision);
+    $('precision-bytes').textContent = C.PRECISIONS[state.precision].bytes + ' bytes/param';
+    render();
+  });
+});
+document.querySelectorAll('#concurrency button[data-value]').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    state.concurrency = Number(btn.getAttribute('data-value'));
+    setPressed('concurrency', state.concurrency);
+    $('conc-value').textContent = state.concurrency + '×';
+    render();
+  });
+});
+$('reset').addEventListener('click', function(){
+  state = {model: 'llama33-70b', precision: 'bf16', context: 4096, concurrency: 1, customParamsB: 70};
+  $('model').value = 'llama33-70b';
+  $('custom-wrap').hidden = true;
+  $('context').value = '4096';
+  $('ctx-tokens').textContent = '4,096 tokens';
+  $('conc-value').textContent = '1×';
+  $('precision-bytes').textContent = '2 bytes/param';
+  setPressed('precision', 'bf16');
+  setPressed('concurrency', '1');
+  render();
+});
+
+render();
+})();
+</script>
+</body>
+</html>
