@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The H100 Rental Trap: Why $2.13 per GPU-Hour Is Not the Price You Pay | GPU Cloud Pricing Benchmark</title>
+<meta name="description" content="Live H100 and A100 catalogue rates, bundle minimums, utilization, and restart overhead: how to calculate the effective cost of a useful GPU-hour before you rent.">
+<link rel="canonical" href="https://gpu.mybskm.top/blog/h100-rental-trap.html">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="author" content="600me">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GPU Cloud Pricing Benchmark">
+<meta property="og:title" content="The H100 Rental Trap: Why $2.13 per GPU-Hour Is Not the Price You Pay">
+<meta property="og:description" content="Live H100 and A100 catalogue rates, bundle minimums, utilization, and restart overhead: how to calculate the effective cost of a useful GPU-hour before you rent.">
+<meta property="og:url" content="https://gpu.mybskm.top/blog/h100-rental-trap.html">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-10-18T14:35:55Z">
+<meta property="article:modified_time" content="2026-10-18T16:00:00Z">
+<meta property="article:author" content="600me">
+<meta property="article:section" content="GPU Cloud Cost Notes">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="The H100 Rental Trap: Why $2.13 per GPU-Hour Is Not the Price You Pay">
+<meta name="twitter:description" content="Live H100 and A100 catalogue rates, bundle minimums, utilization, and restart overhead: how to calculate the effective cost of a useful GPU-hour before you rent.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "The H100 Rental Trap: Why $2.13 per GPU-Hour Is Not the Price You Pay",
+  "description": "Live H100 and A100 catalogue rates, bundle minimums, utilization, and restart overhead: how to calculate the effective cost of a useful GPU-hour before you rent.",
+  "author": {
+    "@type": "Person",
+    "name": "600me",
+    "url": "https://gpu.mybskm.top/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "GPU Cloud Pricing Benchmark",
+    "url": "https://gpu.mybskm.top/"
+  },
+  "datePublished": "2026-10-18T14:35:55Z",
+  "dateModified": "2026-10-18T16:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://gpu.mybskm.top/blog/h100-rental-trap.html"
+  },
+  "url": "https://gpu.mybskm.top/blog/h100-rental-trap.html",
+  "articleSection": "GPU Cloud Cost Notes",
+  "keywords": "gpu, cloud, machinelearning, devops",
+  "inLanguage": "en",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#090d14;--panel:#101925;--line:#253246;--ink:#edf5ff;--body:#c7d4e4;--muted:#a0afc2;--green:#63f6ba;--blue:#8fc5ff;--amber:#eecb87}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 90% -5%,#152d31,transparent 46%),var(--bg);color:var(--ink);font:15px/1.75 ui-monospace,SFMono-Regular,Consolas,monospace;-webkit-font-smoothing:antialiased}
+a{color:var(--green);text-decoration:none}a:hover{text-decoration:underline}a:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+.skip{position:absolute;left:-9999px}.skip:focus{left:16px;top:16px;z-index:20;background:var(--panel);padding:10px 14px;border-radius:8px}
+.shell{max-width:960px;margin:0 auto;padding:0 24px}
+header.site{border-bottom:1px solid var(--line);background:#090d14e6;position:sticky;top:0;backdrop-filter:blur(8px);z-index:5}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:68px;max-width:1120px}
+.brand{font:700 15px ui-monospace,monospace;color:var(--ink);white-space:nowrap}.brand b{color:var(--green)}
+header nav{display:flex;gap:18px;flex-wrap:wrap}header nav a{font-size:12px;color:var(--muted)}header nav a:hover{color:var(--green)}
+.backlink{margin:22px 0 0;font:12.5px ui-monospace,monospace}.backlink a{color:var(--muted)}.backlink a:hover{color:var(--green)}
+main{padding:26px 0 70px}
+.eyebrow{font:11.5px ui-monospace,monospace;color:var(--green);letter-spacing:.18em;text-transform:uppercase;margin:12px 0 0}
+h1{font:700 clamp(30px,4.6vw,52px)/1.12 system-ui,sans-serif;letter-spacing:-.045em;margin:18px 0;max-width:900px}
+.standfirst{font-size:16px;color:var(--muted);max-width:780px;margin:0 0 18px}
+.meta{display:flex;gap:18px;flex-wrap:wrap;font:12px ui-monospace,monospace;color:var(--muted);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0;margin:0 0 26px}
+.meta strong{color:var(--ink)}
+.ftc{border:1px solid #796239;background:#dba6430d;color:var(--amber);border-radius:10px;padding:16px 18px;font-size:13px;line-height:1.62;margin:0 0 30px}
+.ftc strong{color:#f4deac}
+.content{max-width:840px}
+.content h2{font:600 23px/1.3 system-ui,sans-serif;letter-spacing:-.4px;margin:46px 0 12px}
+.content p{margin:0 0 18px;color:var(--body)}
+.content strong{color:#fff}
+.content ul,.content ol{margin:0 0 20px;padding-left:24px;color:var(--body)}
+.content li{margin:0 0 8px}.content li::marker{color:var(--green)}
+.content code{font:13px ui-monospace,monospace;background:#14202e;border:1px solid #2a3a50;border-radius:5px;padding:1.5px 6px;color:#a9f7d6;overflow-wrap:anywhere}
+.content pre{background:#060a10;border:1px solid var(--line);border-radius:10px;padding:16px 18px;overflow:auto;margin:0 0 22px;line-height:1.6}
+.content pre code{background:none;border:0;padding:0;font-size:12.8px;color:#bdf5dd;white-space:pre}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin:0 0 22px;background:#0b121c}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:560px}
+th{font:600 11px ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:#0f1826;text-align:left}
+th,td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:#13202f}
+td.num{color:var(--green);white-space:nowrap}
+.cta-panel{max-width:840px;border:1px solid #2b5e50;background:linear-gradient(100deg,#102a26,#122030);border-radius:14px;padding:22px;margin:34px 0}
+.cta-panel h2{font:600 19px/1.3 system-ui,sans-serif;margin:0 0 6px}
+.cta-panel p{color:var(--muted);font-size:13px;margin:0 0 16px}
+.btn{display:inline-block;background:var(--green);color:#06251a;padding:11px 16px;border-radius:8px;font:700 13.5px system-ui,sans-serif;margin:0 10px 8px 0}
+.btn:hover{filter:brightness(1.08);text-decoration:none}
+.btn.alt{background:#1a2b38;color:var(--ink)}.btn.alt:hover{background:#243a4a}
+footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--muted);font-size:12px}
+footer nav{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:10px}
+@media(max-width:640px){.shell{padding:0 16px}.bar{flex-wrap:wrap;gap:8px;padding-top:12px;padding-bottom:12px}header nav{width:100%;gap:14px}h1{letter-spacing:-.03em}table{min-width:520px}}
+</style>
+</head>
+<body>
+<a class="skip" href="#article">Skip to article</a>
+<header class="site"><div class="shell bar"><a class="brand" href="https://gpu.mybskm.top/"><b>&#9638;</b> GPU / COST INTELLIGENCE</a><nav aria-label="Sister projects"><a href="https://gpu.mybskm.top/">Price index</a><a href="https://gpu.mybskm.top/calculator/">GPU calculator</a><a href="https://scrape.mybskm.top/">Scraping APIs</a></nav></div></header>
+<div class="shell"><p class="backlink"><a href="https://gpu.mybskm.top/">&larr; Back to Live GPU Cloud Price Index</a> &middot; <a href="https://gpu.mybskm.top/calculator/">&larr; Back to the GPU Fit &amp; Cost Calculator</a></p></div>
+<main id="article" class="shell">
+<article>
+<div class="eyebrow">GPU CLOUD COST NOTES / RENTAL TRAP</div>
+<h1>The H100 Rental Trap: Why $2.13 per GPU-Hour Is Not the Price You Pay</h1>
+<p class="standfirst">Live H100 and A100 catalogue rates, bundle minimums, utilization, and restart overhead: how to calculate the effective cost of a useful GPU-hour before you rent.</p>
+<p class="meta"><span>By <strong>600me</strong></span><span><time datetime="2026-10-18T14:35:55Z">18 October 2026</time></span><span>1,673 words &middot; ~8 min read</span></p>
+<aside class="ftc"><strong>Affiliate disclosure (FTC).</strong> Some links on this page are affiliate links. If you buy a service through them, I may earn a commission at no extra cost to you. Commissions never change the price you pay and do not buy a ranking: every table here is built from the same public planning baselines as the live dashboard. Verify current pricing and terms with each provider before purchasing.</aside>
+
+<div class="cta-panel">
+<h2>Check the bundle before you check the rate</h2>
+<p>Model your real workload in the GPU fit and cost calculator, then compare the smallest rentable unit on RunPod and Vast.ai.</p>
+<a class="btn" href="https://go.272738.xyz/runpod?utm_source=gpu_blog&amp;utm_medium=article&amp;utm_campaign=h100_trap&amp;src=article_h100trap" rel="sponsored nofollow noopener">RunPod &nearr;</a><a class="btn alt" href="https://go.272738.xyz/vastai?utm_source=gpu_blog&amp;utm_medium=article&amp;utm_campaign=h100_trap&amp;src=article_h100trap" rel="sponsored nofollow noopener">Vast.ai &nearr;</a>
+<p class="cta-note">Affiliate links. See the disclosure above.</p>
+</div>
+<div class="content">
+<p>An eight-hour H100 fine-tune looks like a $21.52 line item at $2.69 per GPU-hour. Then you discover the cheapest listing is a two-GPU bundle, the dataset sits in storage for a week, the job checkpoints twice, and the instance is interrupted at hour six. The bill is not $21.52, and the headline rate was never the price.</p>
+<p>This is a practical teardown of GPU cloud pricing using live catalogue rates observed on 2026-10-17. The point is not that one provider is always cheaper. The point is that the advertised GPU-hour is a component price, and your budget needs the fully loaded number.</p>
+<h2>What the advertised rate includes</h2>
+<p>Most GPU marketplaces quote compute only:</p>
+<ul><li>The GPU and its host memory.</li><li>The container or VM while it is running.</li><li>Sometimes local disk, sometimes not.</li><li>Sometimes network, sometimes not.</li></ul>
+<p>Storage, egress, taxes, idle time, and restart overhead are usually separate. Multi-GPU offers may require you to rent the whole bundle even if your job can only use one GPU. Community or interruptible capacity may be cheaper because the inventory is not reserved and can disappear.</p>
+<p>That is why a rate table is a starting point, not a budget. The useful unit is <strong>cost per useful GPU-hour</strong>: the total bill divided by the GPU-hours that actually produced work you can keep.</p>
+<h2>What the market actually listed on 2026-10-17</h2>
+<p>The public GPU index samples RunPod's catalogue and Vast.ai's verified on-demand bundles. These are live catalogue observations, not negotiated quotes. Inventory is not guaranteed, and storage and network are extra.</p>
+<div class="tablewrap"><table>
+<thead><tr>
+<th>Provider</th>
+<th>GPU</th>
+<th>Tier</th>
+<th style="text-align:right">$ / GPU-hour</th>
+<th style="text-align:right">100 GPU-hours</th>
+<th>Bundle constraint</th>
+</tr></thead><tbody>
+<tr>
+<td>RunPod</td>
+<td>H100 SXM 80GB</td>
+<td>Community</td>
+<td class="num">$2.690</td>
+<td class="num">$269.00</td>
+<td>Single GPU</td>
+</tr>
+<tr>
+<td>RunPod</td>
+<td>H100 SXM 80GB</td>
+<td>Secure</td>
+<td class="num">$3.990</td>
+<td class="num">$399.00</td>
+<td>Single GPU</td>
+</tr>
+<tr>
+<td>Vast.ai</td>
+<td>H100 SXM 80GB</td>
+<td>Verified on-demand</td>
+<td class="num">$2.134</td>
+<td class="num">$213.40</td>
+<td>2-GPU bundle at $4.269/hour</td>
+</tr>
+<tr>
+<td>RunPod</td>
+<td>H100 PCIe 80GB</td>
+<td>Community</td>
+<td class="num">$1.990</td>
+<td class="num">$199.00</td>
+<td>Single GPU</td>
+</tr>
+<tr>
+<td>RunPod</td>
+<td>H100 PCIe 80GB</td>
+<td>Secure</td>
+<td class="num">$2.890</td>
+<td class="num">$289.00</td>
+<td>Single GPU</td>
+</tr>
+<tr>
+<td>Vast.ai</td>
+<td>H100 PCIe 80GB</td>
+<td>Verified on-demand</td>
+<td class="num">$2.268</td>
+<td class="num">$226.80</td>
+<td>2-GPU bundle at $4.537/hour</td>
+</tr>
+<tr>
+<td>RunPod</td>
+<td>A100 80GB SXM</td>
+<td>Community</td>
+<td class="num">$1.390</td>
+<td class="num">$139.00</td>
+<td>Single GPU</td>
+</tr>
+<tr>
+<td>RunPod</td>
+<td>A100 80GB SXM</td>
+<td>Secure</td>
+<td class="num">$1.790</td>
+<td class="num">$179.00</td>
+<td>Single GPU</td>
+</tr>
+<tr>
+<td>Vast.ai</td>
+<td>A100 80GB SXM</td>
+<td>Verified on-demand</td>
+<td class="num">$1.056</td>
+<td class="num">$105.60</td>
+<td>Single GPU</td>
+</tr>
+<tr>
+<td>RunPod</td>
+<td>A100 80GB PCIe</td>
+<td>Community</td>
+<td class="num">$1.190</td>
+<td class="num">$119.00</td>
+<td>Single GPU</td>
+</tr>
+<tr>
+<td>RunPod</td>
+<td>A100 80GB PCIe</td>
+<td>Secure</td>
+<td class="num">$1.790</td>
+<td class="num">$179.00</td>
+<td>Single GPU</td>
+</tr>
+<tr>
+<td>Vast.ai</td>
+<td>A100 80GB PCIe</td>
+<td>Verified on-demand</td>
+<td class="num">$1.001</td>
+<td class="num">$100.10</td>
+<td>2-GPU bundle at $2.002/hour</td>
+</tr>
+<tr>
+<td>RunPod</td>
+<td>RTX 4090 24GB</td>
+<td>Community</td>
+<td class="num">$0.340</td>
+<td class="num">$34.00</td>
+<td>Single GPU</td>
+</tr>
+<tr>
+<td>RunPod</td>
+<td>RTX 4090 24GB</td>
+<td>Secure</td>
+<td class="num">$0.890</td>
+<td class="num">$89.00</td>
+<td>Single GPU</td>
+</tr>
+<tr>
+<td>Vast.ai</td>
+<td>RTX 4090 24GB</td>
+<td>Verified on-demand</td>
+<td class="num">$0.429</td>
+<td class="num">$42.90</td>
+<td>2-GPU bundle at $0.857/hour</td>
+</tr>
+</tbody></table></div>
+<p>Two things stand out. First, the H100 SXM spread between the cheapest verified listing and the secure RunPod listing is $1.856 per GPU-hour, or 87% more for the secure tier. Second, the cheapest headline rate on the board is not always the cheapest job, because of the bundle minimum.</p>
+<h2>The two-GPU minimum is a commitment</h2>
+<p>Take an eight-hour fine-tune that fits on one H100 SXM.</p>
+<p>At RunPod's community rate, the compute cost is:</p>
+<pre><code>8 hours * $2.69 = $21.52</code></pre>
+<p>At Vast.ai's H100 SXM rate, the listing is a two-GPU bundle at $4.269 per hour. If the job cannot use the second GPU, you still pay for it:</p>
+<pre><code>8 hours * $4.269 = $34.15 for 16 GPU-hours</code></pre>
+<p>You paid for 16 GPU-hours to do 8 GPU-hours of useful work. The effective cost is $4.269 per useful GPU-hour, not $2.134. The bundle is only a discount if you can run two single-GPU jobs in parallel or split the workload across both cards.</p>
+<p>That is the first rule of GPU shopping: <strong>a two-GPU minimum is not a lower price, it is a larger commitment.</strong> Compare the smallest rentable unit, not the per-GPU rate.</p>
+<h2>Community versus Secure is not a 10% upsell</h2>
+<p>The tier names vary, but the trade-off is consistent: community or interruptible capacity is cheaper because the provider does not reserve it; secure or on-demand capacity costs more because it is isolated and more likely to stay up.</p>
+<p>The observed premiums are large:</p>
+<div class="tablewrap"><table>
+<thead><tr>
+<th>GPU</th>
+<th style="text-align:right">Community / standard</th>
+<th style="text-align:right">Secure / reserved</th>
+<th style="text-align:right">Premium</th>
+</tr></thead><tbody>
+<tr>
+<td>H100 SXM 80GB</td>
+<td class="num">$2.690</td>
+<td class="num">$3.990</td>
+<td class="num">+48.3%</td>
+</tr>
+<tr>
+<td>A100 80GB SXM</td>
+<td class="num">$1.390</td>
+<td class="num">$1.790</td>
+<td class="num">+28.8%</td>
+</tr>
+<tr>
+<td>RTX 4090 24GB</td>
+<td class="num">$0.340</td>
+<td class="num">$0.890</td>
+<td class="num">+161.8%</td>
+</tr>
+</tbody></table></div>
+<p>A 48% premium on an H100 is $1.30 per GPU-hour. On a 100-hour job, that is $130. Whether it is worth it depends on what a lost hour costs you.</p>
+<p>If the job checkpoints every 15 minutes and can resume automatically, community capacity can be a rational choice. If the job is a deadline-bound inference service or a multi-day training run without checkpointing, the secure tier may be cheaper than the recovery work. The premium buys availability and isolation, not necessarily raw speed.</p>
+<h2>Utilization is the multiplier that never appears in the rate</h2>
+<p>You do not pay for useful GPU-hours. You pay for billed GPU-hours. If the GPU is waiting on data loading, a stuck download, or a serial preprocessing step, you still pay.</p>
+<p>For 100 useful GPU-hours:</p>
+<div class="tablewrap"><table>
+<thead><tr>
+<th style="text-align:right">Utilization</th>
+<th style="text-align:right">Billed GPU-hours</th>
+<th style="text-align:right">Vast.ai H100 SXM at $2.134</th>
+<th style="text-align:right">RunPod Community H100 SXM at $2.690</th>
+</tr></thead><tbody>
+<tr>
+<td class="num">100%</td>
+<td class="num">100.0</td>
+<td class="num">$213.40</td>
+<td class="num">$269.00</td>
+</tr>
+<tr>
+<td class="num">80%</td>
+<td class="num">125.0</td>
+<td class="num">$266.75</td>
+<td class="num">$336.25</td>
+</tr>
+<tr>
+<td class="num">60%</td>
+<td class="num">166.7</td>
+<td class="num">$355.67</td>
+<td class="num">$448.33</td>
+</tr>
+</tbody></table></div>
+<p>At 60% utilization, the effective cost of a useful H100 SXM hour is $3.56 on the cheaper listing and $4.48 on the more expensive one. Neither number appears on the pricing page.</p>
+<p>This is where data engineering matters more than GPU shopping. A fast NVMe path, a pre-tokenized dataset, and a loader that keeps the GPU fed can be worth more than a $0.50 rate difference. Measure tokens per second or images per second on your actual pipeline, not just the GPU model.</p>
+<h2>What 100 GPU-hours actually cost</h2>
+<p>On paper, Vast.ai's H100 SXM listing is $55.60 cheaper than RunPod's community listing for 100 GPU-hours:</p>
+<pre><code>$269.00 - $213.40 = $55.60</code></pre>
+<p>That is a 20.7% saving. Now add one operational incident. A 45-minute interruption at a $65 per hour engineering cost is $48.75. That single incident consumes 88% of the saving. Two incidents and the cheaper listing is more expensive.</p>
+<p>The arithmetic is not an argument against the cheaper listing. It is an argument for checkpointing, monitoring, and a restart budget. If your job can tolerate interruption and you have automated recovery, the saving is real. If every failure requires a human, the saving is a subsidy for your future self.</p>
+<p>Storage and egress can add smaller but real amounts. Using explicit assumptions of $0.10 per GB-month for storage and $0.05 per GB for egress, a 500GB dataset kept for seven days costs about $11.67, and 200GB of egress costs about $10.00. Those are illustrative rates, not quotes. The point is to put them in the model instead of discovering them on the invoice.</p>
+<h2>The only number to put in the budget</h2>
+<p>Use this formula:</p>
+<pre><code>effective $ / useful GPU-hour =
+  (hourly rate * billed hours + storage + egress + restart cost)
+  / useful GPU-hours</code></pre>
+<p>Example: 100 useful hours on the Vast.ai H100 SXM listing at 80% utilization.</p>
+<pre><code>billed hours = 100 / 0.80 = 125
+compute = 125 * $2.134 = $266.75
+storage + egress + restart = $15 + $10 + $20 = $45
+total = $311.75
+effective rate = $311.75 / 100 = $3.12 per useful GPU-hour</code></pre>
+<p>The headline rate was $2.134. The budget number is $3.12, about 46% higher. Run the same calculation for the secure tier and for your own utilization. The ranking can change.</p>
+<h2>A decision guide that survives real workloads</h2>
+<div class="tablewrap"><table>
+<thead><tr>
+<th>Workload</th>
+<th>Sensible first test</th>
+<th>Why</th>
+</tr></thead><tbody>
+<tr>
+<td>Single 8-hour fine-tune</td>
+<td>RunPod Community H100 SXM or A100 80GB</td>
+<td>No bundle minimum; $21.52 or $11.12 for eight hours at observed rates</td>
+</tr>
+<tr>
+<td>Long, checkpointable batch</td>
+<td>Vast.ai verified on-demand</td>
+<td>Lowest observed $/GPU-hour, but budget restarts and verify the bundle</td>
+</tr>
+<tr>
+<td>Production inference</td>
+<td>Secure or on-demand with capacity</td>
+<td>Availability and isolation matter more than a $0.50 difference</td>
+</tr>
+<tr>
+<td>Multi-GPU training</td>
+<td>Compare bundle price and interconnect</td>
+<td>A two-GPU bundle can fit, but verify NVLink and topology</td>
+</tr>
+<tr>
+<td>Cost-sensitive small models</td>
+<td>RTX 4090 24GB</td>
+<td>Lowest $/hour, but 24GB VRAM is not an H100 substitute</td>
+</tr>
+</tbody></table></div>
+<p>The RTX 4090 row is a reminder that the cheapest GPU-hour is not always the right GPU-hour. If the model does not fit in 24GB, a $0.34 rate is irrelevant. If it does fit, the same 100 GPU-hours cost $34 on RunPod Community versus $269 on H100 SXM. The workload decides.</p>
+<h2>What I would do with a $200 budget</h2>
+<p>Do not start with 100 GPU-hours. Start with 20 to 40 GPU-hours on the smallest rentable unit that fits the model. Measure throughput, not just latency to first token. Checkpoint every 15 minutes. Log the cost per useful GPU-hour, including storage and egress.</p>
+<p>Then compare the effective rate, not the advertised rate. A provider that is 20% cheaper per GPU-hour but interrupts twice as often may lose. A provider that is 20% more expensive but keeps the GPU fed may win.</p>
+<p>The public index and the underlying observations are here:</p>
+<ul><li><strong>GPU cloud price index:</strong> <a href="https://gpu.mybskm.top/?utm_source=devto&amp;utm_medium=article&amp;utm_campaign=gpu_benchmark">gpu.mybskm.top</a></li><li><strong>Pricing methodology:</strong> <a href="https://github.com/600me/awesome-gpu-cloud-pricing-benchmark?utm_source=devto&amp;utm_medium=article&amp;utm_campaign=gpu_benchmark">GitHub repository</a></li><li><strong>Scraping API cost calculator:</strong> <a href="https://scrape.mybskm.top/?utm_source=devto&amp;utm_medium=article&amp;utm_campaign=scraping_api_benchmark">scrape.mybskm.top</a></li></ul>
+<p><strong>Disclosure:</strong> Some outbound links on this page are affiliate links. If you buy a service through them, I may earn a commission at no extra cost to you. Rates are catalogue observations, not quotes, and inventory changes. Verify current pricing, storage, egress, and interruption policy with the provider before committing budget.</p>
+<p><strong>Data note:</strong> GPU rates observed 2026-10-17T12:50:44Z from RunPod's GraphQL catalogue and Vast.ai's bundles API. Secure and community availability is not guaranteed. Storage, network, taxes, and restart overhead are excluded from the headline rates.</p>
+</div>
+
+<div class="cta-panel">
+<h2>Check the bundle before you check the rate</h2>
+<p>Model your real workload in the GPU fit and cost calculator, then compare the smallest rentable unit on RunPod and Vast.ai.</p>
+<a class="btn" href="https://go.272738.xyz/runpod?utm_source=gpu_blog&amp;utm_medium=article&amp;utm_campaign=h100_trap&amp;src=article_h100trap" rel="sponsored nofollow noopener">RunPod &nearr;</a><a class="btn alt" href="https://go.272738.xyz/vastai?utm_source=gpu_blog&amp;utm_medium=article&amp;utm_campaign=h100_trap&amp;src=article_h100trap" rel="sponsored nofollow noopener">Vast.ai &nearr;</a>
+<p class="cta-note">Affiliate links. See the disclosure above.</p>
+</div>
+<p class="backlink"><a href="https://gpu.mybskm.top/">&larr; Back to Live GPU Cloud Price Index</a> &middot; <a href="https://gpu.mybskm.top/calculator/">&larr; Back to the GPU Fit &amp; Cost Calculator</a></p>
+</article>
+</main>
+<footer><div class="shell"><nav aria-label="Sister projects"><a href="https://proxy.mybskm.top/">Proxy benchmark</a> &middot; <a href="https://pay.mybskm.top/">Payments calculator</a> &middot; <a href="https://scrape.mybskm.top/">Scraping APIs</a></nav><p>Catalogue observations, not quotes. Affiliate links are disclosed on this page and never change the rate you pay.</p><p>&copy; 2026 GPU Cloud Pricing Benchmark. Rates and baselines are dated observations, not quotes or guarantees.</p></div></footer>
+</body>
+</html>
