@@ -35,9 +35,14 @@ A single-file, zero-dependency static Space for sizing LLM inference on rented G
 
 ## Sister tools
 
-- [LLM & RAG web-scraping TCO calculator](https://huggingface.co/spaces/600me/rag-web-scraping-cost-calculator)
-- [Main-site scraping calculator](https://scrape.mybskm.top/calculator/)
-- [GPU price dashboard](https://gpu.mybskm.top/)
+All four calculators in this matrix are mirrored as zero-dependency Hugging Face Static Spaces:
+
+1. **This Space** — GPU Fit & Cost Calculator: https://huggingface.co/spaces/600me/llm-gpu-cost-calculator
+2. LLM & RAG web-scraping TCO calculator: https://huggingface.co/spaces/600me/rag-web-scraping-cost-calculator
+3. Residential proxy sticky-session & `cf_clearance` loss calculator: https://huggingface.co/spaces/600me/residential-proxy-sticky-session-calculator
+4. MoR vs US LLC + Stripe breakeven calculator: https://huggingface.co/spaces/600me/ai-saas-stripe-vs-mor-tax-calculator
+
+Main sites: [gpu.mybskm.top](https://gpu.mybskm.top/) · [scrape.mybskm.top](https://scrape.mybskm.top/calculator/) · [proxy.mybskm.top](https://proxy.mybskm.top/calculator/) · [pay.mybskm.top](https://pay.mybskm.top/)
 
 ## Disclosure
 
