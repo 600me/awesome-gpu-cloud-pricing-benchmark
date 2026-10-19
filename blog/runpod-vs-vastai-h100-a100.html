@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RunPod vs Vast.ai (2026): Real H100 &amp; A100 Effective Cost After Cold-Start, NVMe Storage &amp; Bandwidth Billing</title>
+<meta name="description" content="Vast.ai lists H100 capacity about 25% below RunPod. After egress at $0.01-$0.08/GB, pre-pull cold start and a 15% failover reserve, a 150GB two-hour test is 63% more expensive on Vast and a 24/7 node flips to RunPod above 5.4TB/month. Three workloads, exact dollars.">
+<link rel="canonical" href="https://gpu.mybskm.top/blog/runpod-vs-vastai-h100-a100.html">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="author" content="600me">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GPU Cloud Pricing Benchmark">
+<meta property="og:title" content="RunPod vs Vast.ai (2026): Real H100 &amp; A100 Effective Cost After Cold-Start, NVMe Storage &amp; Bandwidth Billing">
+<meta property="og:description" content="A 25% cheaper sticker rate is not a 25% cheaper bill. Three workloads, line-item totals, and the 5.4TB/month egress point where Vast.ai stops winning.">
+<meta property="og:url" content="https://gpu.mybskm.top/blog/runpod-vs-vastai-h100-a100.html">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-10-19T08:00:00Z">
+<meta property="article:modified_time" content="2026-10-19T08:00:00Z">
+<meta property="article:author" content="600me">
+<meta property="article:section" content="GPU Cloud Economics">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RunPod vs Vast.ai: the H100 bill after bandwidth and cold start">
+<meta name="twitter:description" content="Scenario A: Vast $8.86 vs RunPod $5.42. Scenario C: Vast $281.67 vs RunPod $596.19. The same two providers, two different winners.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "RunPod vs Vast.ai (2026): Real H100 & A100 Effective Cost After Cold-Start, NVMe Storage & Bandwidth Billing",
+  "description": "A line-item comparison of RunPod and Vast.ai H100 80GB and A100 80GB capacity: hourly rates, billing granularity, cold start, per-GB network billing, persistent storage and preemption risk, priced across three real workloads.",
+  "url": "https://gpu.mybskm.top/blog/runpod-vs-vastai-h100-a100.html",
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://gpu.mybskm.top/blog/runpod-vs-vastai-h100-a100.html"},
+  "datePublished": "2026-10-19T08:00:00Z",
+  "dateModified": "2026-10-19T08:00:00Z",
+  "inLanguage": "en",
+  "articleSection": "GPU Cloud Economics",
+  "keywords": "runpod vs vast.ai, h100 80gb price, a100 80gb price, gpu egress cost, flashboot, cold start, nvme storage, llm fine-tuning cost, vllm inference cost",
+  "author": {"@type": "Person", "name": "600me", "url": "https://github.com/600me"},
+  "publisher": {
+    "@type": "Organization",
+    "name": "GPU Cloud Pricing Benchmark",
+    "url": "https://gpu.mybskm.top/"
+  },
+  "isPartOf": {"@type": "WebSite", "name": "GPU Cloud Pricing Benchmark", "url": "https://gpu.mybskm.top/"},
+  "about": [
+    {"@type": "Thing", "name": "GPU cloud hourly pricing"},
+    {"@type": "Thing", "name": "GPU network egress billing"},
+    {"@type": "Thing", "name": "Cold start overhead for LLM workloads"}
+  ]
+}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#090d14;--panel:#101925;--line:#253246;--ink:#edf5ff;--body:#c7d4e4;--muted:#a0afc2;--green:#63f6ba;--blue:#8fc5ff;--amber:#eecb87}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 90% -5%,#152d31,transparent 46%),var(--bg);color:var(--ink);font:15px/1.75 ui-monospace,SFMono-Regular,Consolas,monospace;-webkit-font-smoothing:antialiased}
+a{color:var(--green);text-decoration:none}a:hover{text-decoration:underline}a:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+.skip{position:absolute;left:-9999px}.skip:focus{left:16px;top:16px;z-index:20;background:var(--panel);padding:10px 14px;border-radius:8px}
+.shell{max-width:960px;margin:0 auto;padding:0 24px}
+header.site{border-bottom:1px solid var(--line);background:#090d14e6;position:sticky;top:0;backdrop-filter:blur(8px);z-index:5}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:68px;max-width:1120px}
+.brand{font:700 15px ui-monospace,monospace;color:var(--ink);white-space:nowrap}.brand b{color:var(--green)}
+header nav{display:flex;gap:18px;flex-wrap:wrap}header nav a{font-size:12px;color:var(--muted)}header nav a:hover{color:var(--green)}
+.backlink{margin:22px 0 0;font:12.5px ui-monospace,monospace}.backlink a{color:var(--muted)}.backlink a:hover{color:var(--green)}
+main{padding:26px 0 70px}
+.eyebrow{font:11.5px ui-monospace,monospace;color:var(--green);letter-spacing:.18em;text-transform:uppercase;margin:12px 0 0}
+h1{font:700 clamp(30px,4.6vw,50px)/1.12 system-ui,sans-serif;letter-spacing:-.045em;margin:18px 0;max-width:900px}
+.standfirst{font-size:16px;color:var(--muted);max-width:800px;margin:0 0 18px}
+.meta{display:flex;gap:18px;flex-wrap:wrap;font:12px ui-monospace,monospace;color:var(--muted);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0;margin:0 0 26px}
+.meta strong{color:var(--ink)}
+.ftc{border:1px solid #796239;background:#dba6430d;color:var(--amber);border-radius:10px;padding:16px 18px;font-size:13px;line-height:1.62;margin:0 0 30px}
+.ftc strong{color:#f4deac}
+.content{max-width:840px}
+.content h2{font:600 23px/1.3 system-ui,sans-serif;letter-spacing:-.4px;margin:46px 0 12px}
+.content h3{font:600 17px/1.35 system-ui,sans-serif;margin:30px 0 8px}
+.content p{margin:0 0 18px;color:var(--body)}
+.content strong{color:#fff}
+.content ul,.content ol{margin:0 0 20px;padding-left:24px;color:var(--body)}
+.content li{margin:0 0 8px}.content li::marker{color:var(--green)}
+.content code{font:13px ui-monospace,monospace;background:#14202e;border:1px solid #2a3a50;border-radius:5px;padding:1.5px 6px;color:#a9f7d6;overflow-wrap:anywhere}
+.content pre{background:#060a10;border:1px solid var(--line);border-radius:10px;padding:16px 18px;overflow:auto;margin:0 0 22px;line-height:1.6}
+.content pre code{background:none;border:0;padding:0;font-size:12.8px;color:#bdf5dd;white-space:pre}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin:0 0 22px;background:#0b121c}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px}
+th{font:600 11px ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:#0f1826;text-align:left}
+th,td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:#13202f}
+td.num{color:var(--green);white-space:nowrap}
+td.warn{color:var(--amber);white-space:nowrap}
+.callout{border-left:3px solid var(--green);background:#0c1a19;border-radius:0 10px 10px 0;padding:14px 18px;margin:0 0 24px;color:var(--body);font-size:13.5px}
+.callout strong{color:var(--green)}
+.callout.warn{border-left-color:var(--amber);background:#1a150c}.callout.warn strong{color:var(--amber)}
+.cta-panel{max-width:840px;border:1px solid #2b5e50;background:linear-gradient(100deg,#102a26,#122030);border-radius:14px;padding:22px;margin:34px 0}
+.cta-panel h2{font:600 19px/1.3 system-ui,sans-serif;margin:0 0 6px}
+.cta-panel p{color:var(--muted);font-size:13px;margin:0 0 16px}
+.btn{display:inline-block;background:var(--green);color:#06251a;padding:11px 16px;border-radius:8px;font:700 13.5px system-ui,sans-serif;margin:0 10px 8px 0}
+.btn:hover{filter:brightness(1.08);text-decoration:none}
+.btn.alt{background:#1a2b38;color:var(--ink)}.btn.alt:hover{background:#243a4a}
+.btn.vast{background:#8fc5ff;color:#0a1e33}.btn.vast:hover{filter:brightness(1.08)}
+footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--muted);font-size:12px}
+footer nav{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:10px}
+.srcline{font:11.5px ui-monospace,monospace;color:var(--muted);margin:0 0 18px;line-height:1.6}
+@media(max-width:640px){.shell{padding:0 16px}.bar{flex-wrap:wrap;gap:8px;padding-top:12px;padding-bottom:12px}header nav{width:100%;gap:14px}h1{letter-spacing:-.03em}table{min-width:520px}}
+</style>
+</head>
+<body>
+<a class="skip" href="#article">Skip to article</a>
+<header class="site"><div class="shell bar"><a class="brand" href="https://gpu.mybskm.top/"><b>&#9632;</b> GPU CLOUD / BENCHMARK</a><nav aria-label="Site"><a href="https://gpu.mybskm.top/">Live price index</a><a href="https://gpu.mybskm.top/calculator/">Calculator</a><a href="https://gpu.mybskm.top/blog/">Research</a><a href="https://pay.mybskm.top/">Payments</a><a href="https://proxy.mybskm.top/">Proxies</a></nav></div></header>
+<div class="shell"><p class="backlink"><a href="https://gpu.mybskm.top/blog/">&larr; Back to GPU cost research</a></p></div>
+<main id="article" class="shell">
+<article>
+<div class="eyebrow">GPU CLOUD ECONOMICS / HEAD-TO-HEAD</div>
+<h1>RunPod vs Vast.ai (2026): Real H100 &amp; A100 Effective Cost After Cold-Start, NVMe Storage &amp; Bandwidth Billing</h1>
+<p class="standfirst">On the sticker, Vast.ai rents H100 SXM capacity about <strong>25%</strong> below RunPod's Community Cloud ($2.01 against $2.69) and A100 80GB about <strong>26%</strong> below its Secure tier ($1.319 against $1.79). On the invoice, a two-hour model test is <strong>63%</strong> more expensive on Vast and a 7&times;24 production node flips to RunPod above <strong>5.4 TB/month</strong> of transfer &mdash; while a 72-hour preemptible fine-tune is still <strong>52.8% cheaper</strong> on Vast. Same two providers, three different winners.</p>
+<p class="meta"><span>By <strong>600me</strong></span><span><time datetime="2026-10-19T08:00:00Z">19 October 2026</time></span><span>Rates: live API snapshot 2026-10-18T16:37:25Z &middot; USD</span></p>
+<aside class="ftc"><strong>Affiliate disclosure (FTC).</strong> This article contains affiliate links for RunPod and Vast.ai. If you rent capacity through them, this site may earn a commission at no extra cost to you. That has no effect on the arithmetic, the ordering of the tables or which provider wins a scenario &mdash; the two links are worth the same, and one scenario below is deliberately won by each provider. Rates are a planning baseline captured from the providers' own APIs, not a quote; GPU markets move daily and host-set network rates vary per machine.</aside>
+
+<h2>The two prices on every GPU page, and the third one that decides the bill</h2>
+<p>A pricing page shows one number per GPU: dollars per GPU-hour. Renting an H100 80GB looks like a comparison of $2.01 against $2.69, and the decision looks like arithmetic in one dimension. It is not, because the hourly rate is the only line item that both providers bill the same way.</p>
+<p>The three charges that differ:</p>
+<ul>
+<li><strong>Wall-clock time that is not GPU time.</strong> A pod that spends 40 minutes pulling a 150 GB set of weights and a 25 GB container image is still renting the GPU. If that pull happens on every fresh host &mdash; as it does on a peer-to-peer marketplace without a shared image cache &mdash; the overhead is billed at the full hourly rate and produces nothing.</li>
+<li><strong>Network transfer.</strong> RunPod does not meter pod traffic. Vast.ai hosts set their own inbound and outbound rates, commonly quoted in the $0.01&ndash;$0.08 per GB band, and both directions can appear on the invoice. For a text LLM endpoint that is noise. For a workload that pulls 150 GB of weights per cold start, or serves a public demo, it is a real second line item.</li>
+<li><strong>Storage that survives the pod.</strong> A stopped pod still owns its disk. Network volumes and container disks are billed per GB-month in both ecosystems, but on a marketplace the instance can also disappear when the host needs the machine back, which turns "storage cost" into "storage cost plus re-provisioning".</li>
+</ul>
+<p>The metric that reconciles all three is <strong>dollars per useful GPU-hour</strong>: the total invoice for a workload divided by the GPU-hours that actually produced work. It is the only number comparable across the two providers, and it moves in opposite directions depending on the workload shape.</p>
+<pre><code>effective $/useful GPU-hour =
+    (gpu_hours_billed * hourly_rate
+     + ingress_gb * in_rate
+     + egress_gb * out_rate
+     + storage_gb_month * storage_rate
+     + reserve_for_interruption)
+    / useful_gpu_hours</code></pre>
+
+<h2>Six dimensions, one table</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Dimension</th><th>RunPod</th><th>Vast.ai</th></tr></thead>
+<tbody>
+<tr>
+<td><strong>1. H100 80GB / A100 80GB hourly rate</strong></td>
+<td>H100 SXM $2.69 Community / $3.99 Secure. H100 PCIe $1.99 / $2.89. A100 80GB SXM $1.39 / $1.79. A100 80GB PCIe $1.19 / $1.79.</td>
+<td>H100 SXM $2.01 verified on-demand sample. H100 PCIe $2.002. A100 80GB SXM $1.319. A100 80GB PCIe $0.935. Interruptible bids clear far lower, around 55&ndash;60% of on-demand.</td>
+</tr>
+<tr>
+<td><strong>2. Billing granularity &amp; cold start</strong></td>
+<td>Per-second billing. FlashBoot serves a cached container image in roughly a minute when the image is already on the host, so a restart is cheap. Stopping a pod frees the GPU but keeps the volume.</td>
+<td>Per-second billing. No cross-host image cache: a new host pulls the container from the registry again, and any weights not on a persistent volume are re-downloaded. Restarts land on a different physical machine by design.</td>
+</tr>
+<tr>
+<td><strong>3. Network bandwidth billing</strong></td>
+<td class="num">$0 for pod ingress and egress. A 150 GB weight download and an API serving 6 TB a month cost nothing extra.</td>
+<td class="warn">Host-set, typically $0.01&ndash;$0.08/GB, and it applies to pulls as well as serving. 150 GB at $0.02/GB is $3.00 before the GPU does any work.</td>
+</tr>
+<tr>
+<td><strong>4. Persistent storage</strong></td>
+<td>Network volume around $0.10/GB-month. A 500 GB volume is $50/month whether the pod runs or is stopped, and it follows you between GPUs.</td>
+<td>Host local disk billed per GB-month at the host's rate, commonly $0.10&ndash;$0.20. Cheaper for short jobs, riskier for long ones: if the host reclaims the instance, the data is gone.</td>
+</tr>
+<tr>
+<td><strong>5. Preemption &amp; physical reliability</strong></td>
+<td>Secure Cloud runs in tier 3/4 datacenters with an uptime commitment; Community Cloud is shared inventory but still a single operator with a support path.</td>
+<td>A peer-to-peer marketplace of independent hosts. Verified hosts are screened, unverified hosts are cheaper and less predictable. There is no SLA on a rented desktop, and a host can go offline mid-run.</td>
+</tr>
+<tr>
+<td><strong>6. Best workload fit</strong></td>
+<td>Anything that repeats: interactive notebooks, short tests, 24/7 inference, anything where a cold start is a tax you pay repeatedly.</td>
+<td>Anything that is long, batch, checkpointed and preemptible: fine-tunes, distillation, synthetic data generation, offline evaluation sweeps.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="srcline">Rates captured from the RunPod GraphQL catalog and the Vast.ai bundles API on 2026-10-18T16:37:25Z (HTTP 200 on both). Vast figures are the lowest verified rentable single-GPU offers sampled, before host network and storage charges. Interruptible pricing and storage rates are vendor and host list values, not a quote.</p>
+
+<h2>Scenario A &mdash; pull a 150 GB model and run a two-hour test</h2>
+<p>This is the workload that produces the most misleading price comparison in the ecosystem, because the sticker says Vast is 25% cheaper and the invoice says the opposite.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Line item</th><th>Vast.ai H100 SXM @ $2.01</th><th>RunPod H100 SXM @ $2.69 (Community)</th></tr></thead>
+<tbody>
+<tr><td>GPU time, 2.0 hours</td><td class="num">$4.02</td><td class="num">$5.38</td></tr>
+<tr><td>Weights: 150 GB ingress @ $0.02/GB</td><td class="num">$3.00</td><td class="num">$0.00</td></tr>
+<tr><td>Container image: 25 GB pull @ $0.02/GB</td><td class="num">$0.50</td><td class="num">$0.00</td></tr>
+<tr><td>Cold start billed at full rate</td><td class="num">$1.34 (40 min)</td><td class="num">$0.04 (60 s FlashBoot)</td></tr>
+<tr><td><strong>Total for the test</strong></td><td class="num"><strong>$8.86</strong></td><td class="num"><strong>$5.42</strong></td></tr>
+<tr><td>Effective $/useful GPU-hour</td><td class="warn">$4.43</td><td class="num">$2.71</td></tr>
+</tbody>
+</table>
+</div>
+<p>Vast is cheaper on the only line most people compare &mdash; $4.02 against $5.38 of GPU time &mdash; and then loses $3.44 on transfer and cold start. The effective rate is <strong>63% higher</strong> ($4.43 against $2.71) for a job that took two hours. If your test takes twenty minutes instead of two hours, the distortion gets worse: the transfer, image pull and cold start are fixed costs that do not shrink with job length, so the same 20-minute test carries $4.84 of overhead against $0.67 of GPU time.</p>
+<div class="callout"><strong>The rule this scenario produces:</strong> if the job does not amortise a 150 GB transfer, the hourly rate is the wrong number to optimise. Rent the platform that already has the weights.</div>
+
+<h2>Scenario B &mdash; a 7&times;24 vLLM inference node</h2>
+<p>Now the same two providers for 730 hours a month, one H100 SXM, 500 GB of persistent data, and a serving surface that moves 6 TB a month. This is where RunPod's zero-rated network starts paying for the higher hourly rate, and where a peer-to-peer marketplace needs an availability reserve that a datacenter contract does not.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Line item, 730 hours</th><th>Vast.ai H100 SXM @ $2.01</th><th>RunPod H100 SXM @ $2.69 (Community)</th></tr></thead>
+<tbody>
+<tr><td>GPU time</td><td class="num">$1,467.30</td><td class="num">$1,963.70</td></tr>
+<tr><td>Egress: 6,144 GB @ $0.05/GB</td><td class="num">$307.20</td><td class="num">$0.00</td></tr>
+<tr><td>Persistent storage: 500 GB @ $0.10/GB-mo</td><td class="num">$50.00</td><td class="num">$50.00</td></tr>
+<tr><td>Interruption / failover reserve (15% of GPU time)</td><td class="warn">$220.10</td><td class="num">$0.00</td></tr>
+<tr><td><strong>Monthly total</strong></td><td class="warn"><strong>$2,044.60</strong></td><td class="num"><strong>$2,013.70</strong></td></tr>
+<tr><td>Effective $/useful GPU-hour</td><td class="warn">$2.80</td><td class="num">$2.76</td></tr>
+</tbody>
+</table>
+</div>
+<p>RunPod wins by <strong>$30.90 a month</strong> &mdash; a thin margin that exists only because of the reserve. Drop the 15% interruption reserve and Vast wins at $1,824.50 against $2,013.70. That is the honest version of this comparison: the two providers are within 2% of each other for a 24/7 node, and which one is cheaper depends on two inputs you control, not on the sticker.</p>
+<p>The first input is transfer volume. Hold the other assumptions fixed and solve for the egress at which the two bills cross:</p>
+<pre><code>crossover_gb = (runpod_total - vast_fixed_costs) / vast_egress_rate
+             = ($2,013.70 - $1,737.40) / $0.05
+             = 5,526 GB  (~5.4 TB per month)</code></pre>
+<p>Below about 5.4 TB a month, Vast's hourly discount survives the bandwidth bill. Above it, RunPod is cheaper &mdash; and the curve keeps diverging, because RunPod's marginal cost per extra terabyte is zero. A text-only vLLM endpoint moving a few hundred GB a month sits comfortably below the crossover and should probably stay on Vast if it can accept the availability risk. An endpoint that also distributes model artifacts, serves a public demo, streams large outputs, or hosts multimodal traffic crosses it quickly.</p>
+<p>The second input is how much you are willing to pay for not being evicted. If a host disappears at 03:00 and your clients see 502s for forty minutes while you migrate a pod and re-pull weights, that event has a cost that no rate card contains. A 15% reserve is a crude way to price it. Teams with paying customers usually price it higher, and at that point RunPod Secure at $3.99 becomes the rational choice even though it is the most expensive hourly rate in this article.</p>
+
+<h2>Scenario C &mdash; a 72-hour LoRA / distillation batch on three H100s</h2>
+<p>The mirror image. Long, checkpointed, tolerant of a restart, and utterly indifferent to a cold start that happens twice in three days. This is the workload peer-to-peer GPU markets were built for.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Line item, 3 &times; H100 SXM &times; 72 h</th><th>Vast.ai interruptible @ $1.19</th><th>RunPod H100 SXM @ $2.69 (Community)</th></tr></thead>
+<tbody>
+<tr><td>GPU time, 216 GPU-hours</td><td class="num">$257.04</td><td class="num">$581.04</td></tr>
+<tr><td>Weights: 450 GB ingress @ $0.02/GB</td><td class="num">$9.00</td><td class="num">$0.00</td></tr>
+<tr><td>NVMe: 1.5 TB for 72 h, pro-rated</td><td class="num">$15.15</td><td class="num">$15.15</td></tr>
+<tr><td>Checkpoint restarts: 2 evictions &times; 12 min</td><td class="num">$0.48</td><td class="num">$0.00</td></tr>
+<tr><td><strong>Total for the run</strong></td><td class="num"><strong>$281.67</strong></td><td class="num"><strong>$596.19</strong></td></tr>
+<tr><td>Effective $/useful GPU-hour</td><td class="num">$1.30</td><td class="num">$2.76</td></tr>
+</tbody>
+</table>
+</div>
+<p>Vast saves <strong>$314.52 on a single three-day run</strong>, and the saving is not a rounding error on the transfer bill: the transfer, storage and restart charges together add $24.63, which is 8.7% of Vast's total and still leaves it 52.8% cheaper. Two evictions costing twelve minutes each are priced in at $0.48, because a checkpointed batch job only loses the work since the last checkpoint.</p>
+<div class="callout warn"><strong>One honest caveat.</strong> RunPod also sells preemptible capacity, and at roughly $1.50/GPU-hour the gap narrows to about <strong>$57.48</strong> for this run. The wide margin in the table reflects the practical reality that three H100s of interruptible capacity are not always available on RunPod when you want to start, while a marketplace has thousands of independent sellers. If you can get RunPod spot immediately, the premium you are paying for a managed platform is small.</div>
+<p>The A100 80GB version of the same job is cheaper again on both sides: at $1.319 on-demand and around $0.78 interruptible, 216 A100 GPU-hours for 72 hours cost <strong>$168.48</strong> of GPU time and about <strong>$177</strong> including weight transfer, and the gap to RunPod's $1.39 Community rate stays in the same proportion. For LoRA-scale fine-tuning of models that fit in 80 GB, A100 capacity is the value tier &mdash; H100 only pays when you need FP8 or the extra memory bandwidth.</p>
+
+<h2>What none of these tables price</h2>
+<p>Three costs are real, recurring, and absent from every line item above.</p>
+<ul>
+<li><strong>Re-provisioning time.</strong> A cold start on a new Vast host is 25&ndash;40 minutes for a large model. If your team does that four times a week, it is a working day per month spent watching a progress bar.</li>
+<li><strong>Data loss on eviction.</strong> Local disk on a rented machine is not durable storage. Checkpoints belong on a volume, an object store or the host you control, and that replication has its own cost.</li>
+<li><strong>Prepaid credit and billing friction.</strong> Marketplaces run on prepaid balances; a card decline mid-run stops a pod. Managed platforms invoice. Neither is wrong, but a finance team will price the difference at more than zero.</li>
+</ul>
+<p>There is also a correctness risk that shows up as a performance mystery: a "verified" marketplace host can have a degraded interconnect, PCIe lanes shared with other tenants, or a thermal limit that quietly halves sustained throughput. The cure is measurement, not a rate card.</p>
+
+<h2>Measure your own effective rate in ten minutes</h2>
+<p>Warm up, time a fixed workload, and divide dollars by useful work. The script below is the same shape used to fill the tables in this article.</p>
+<pre><code>import time, subprocess, json
+
+start = time.time()                 # pod clocks in at this moment
+subprocess.run(["python", "-m", "pip", "install", "-q", "transformers"])
+load_start = time.time()
+# ... download weights and build the engine here ...
+load_seconds = time.time() - load_start
+
+work_start = time.time()
+# ... run the fixed 200-prompt evaluation here ...
+work_seconds = time.time() - work_start
+
+print(json.dumps({
+    "billed_seconds": round(time.time() - start, 1),
+    "load_seconds": round(load_seconds, 1),
+    "work_seconds": round(work_seconds, 1),
+    "overhead_ratio": round((load_seconds) / max(work_seconds, 1e-9), 3),
+}))</code></pre>
+<p>If <code>overhead_ratio</code> is above 0.2, you are renting cold-start time and should be on a platform with a cached image and free ingress. If it is below 0.05 and the job is checkpointed, you are the workload a marketplace is built for and the hourly discount is yours to keep.</p>
+
+<h2>The three-line decision</h2>
+<ol>
+<li><strong>Short and interactive, or 24/7 serving:</strong> RunPod. The hourly premium is smaller than the transfer, cold-start and failover costs it removes. The crossover for a serving node is about 5.4 TB/month of egress; below that the difference is under $31 a month either way.</li>
+<li><strong>Long, checkpointed and preemptible:</strong> Vast.ai. A 72-hour three-GPU batch run saves $314.52 against RunPod Community rates, or roughly $57 against RunPod spot if spot is available.</li>
+<li><strong>Unsure:</strong> price the transfer first. At $0.02/GB, 150 GB of weights is $3.00 per cold start. Multiply that by the number of cold starts you will actually have, and the answer usually appears before you finish the multiplication.</li>
+</ol>
+
+<div class="cta-panel">
+<h2>Price your own workload</h2>
+<p>The calculator takes GPU model, hours, utilisation, egress and storage and returns the effective dollars per useful GPU-hour, so you can put your own numbers into the tables above.</p>
+<a class="btn" href="https://gpu.mybskm.top/calculator/" rel="noopener">Open the GPU cost calculator &nearr;</a>
+<a class="btn alt" href="https://huggingface.co/spaces/600me/llm-gpu-cost-calculator" target="_blank" rel="noopener">Run it on Hugging Face Spaces &nearr;</a>
+</div>
+
+<div class="cta-panel">
+<h2>Rent the capacity, if the arithmetic says so</h2>
+<p>Both links below are affiliate links carrying the same tracking parameter, and both providers win a scenario in this article. Pick with the tables, not the discounts.</p>
+<a class="btn" href="https://go.272738.xyz/runpod?src=compare_runpod_vast" target="_blank" rel="sponsored noopener">Rent H100 on RunPod &nearr;</a>
+<a class="btn vast" href="https://go.272738.xyz/vastai?src=compare_runpod_vast" target="_blank" rel="sponsored noopener">Rent H100 on Vast.ai &nearr;</a>
+<p style="font-size:12px;color:var(--muted);margin:10px 0 0">Affiliate links: a commission may be paid at no extra cost to you. Rates change daily; verify the current price and the host's network terms before renting.</p>
+</div>
+
+<h2>Method and sources</h2>
+<p>Hourly rates were pulled directly from each provider's catalog API on 2026-10-18T16:37:25Z, both returning HTTP 200: the RunPod GraphQL catalog for Community and Secure tiers, and the Vast.ai bundles endpoint for the lowest verified rentable single-GPU offers. Every dollar figure in the scenario tables is a multiplication of those rates by the stated quantities, plus the stated network, storage and reserve assumptions. Nothing is a vendor quote and nothing is a promotion.</p>
+<p>Assumptions worth restating: Vast ingress and egress at $0.02/GB for weights and $0.05/GB for serving traffic, both inside the commonly quoted $0.01&ndash;$0.08 band; persistent storage at $0.10/GB-month for both providers; a 15% interruption reserve for the marketplace in a production scenario; interruptible Vast capacity at $1.19/GPU-hour, approximately 59% of the verified on-demand sample. Change any of them and the tables change; the method does not.</p>
+<p>Related research: <a href="https://gpu.mybskm.top/blog/h100-rental-trap.html">The H100 Rental Trap</a>, and the <a href="https://gpu.mybskm.top/">live rate index</a> that feeds these tables.</p>
+</article>
+</main>
+<footer><div class="shell"><nav aria-label="Footer"><a href="https://gpu.mybskm.top/">Live price index</a><a href="https://gpu.mybskm.top/calculator/">GPU calculator</a><a href="https://gpu.mybskm.top/blog/">Research blog</a><a href="https://pay.mybskm.top/">Payment economics</a><a href="https://proxy.mybskm.top/">Proxy benchmark</a></nav><p>Independent GPU cloud cost research. Planning models with stated assumptions, not a vendor quote or a guarantee of availability. Affiliate links may earn a commission at no extra cost to you.</p></div></footer>
+</body>
+</html>

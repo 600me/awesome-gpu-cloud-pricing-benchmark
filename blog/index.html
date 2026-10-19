@@ -39,6 +39,14 @@
   "hasPart": [
     {
       "@type": "Article",
+      "headline": "RunPod vs Vast.ai (2026): Real H100 & A100 Effective Cost After Cold-Start, NVMe Storage & Bandwidth Billing",
+      "description": "Hourly rates, cold start, per-GB network billing, persistent storage and preemption priced across three real workloads: a two-hour test, a 7x24 vLLM node and a 72-hour fine-tune.",
+      "url": "https://gpu.mybskm.top/blog/runpod-vs-vastai-h100-a100.html",
+      "datePublished": "2026-10-19",
+      "author": {"@type": "Person", "name": "600me"}
+    },
+    {
+      "@type": "Article",
       "headline": "The H100 Rental Trap: Why $2.13/GPU-Hour Is Not the Price You Pay",
       "description": "Bundle minimums, community-vs-secure premiums, utilization and restart overhead: how to calculate the effective cost of a useful GPU-hour.",
       "url": "https://gpu.mybskm.top/blog/h100-rental-trap.html",
@@ -105,16 +113,28 @@ footer nav{margin-bottom:10px}footer nav a{color:var(--blue)}
 <div class="eyebrow">RESEARCH INDEX / GPU CLOUD TCO</div>
 <h1>GPU cloud infrastructure &amp; TCO teardowns</h1>
 <p class="standfirst">Catalogue rates are component prices. These reports convert them into <strong>dollars per useful GPU-hour</strong> by adding bundle minimums, idle capacity, storage, egress and restart overhead &mdash; the costs that decide whether a cheap listing is actually cheap.</p>
-<p class="meta"><span>Published by <strong>600me</strong></span><span>1 long-form report</span><span>Live catalogue observations</span><span>Baselines dated 2026-10-17</span></p>
+<p class="meta"><span>Published by <strong>600me</strong></span><span>2 long-form reports</span><span>Live catalogue observations</span><span>Baselines dated 2026-10-18</span></p>
 
 <div class="stats" aria-label="Research scope">
-<div class="stat"><b>1</b><span>Deep-dive TCO report</span></div>
+<div class="stat"><b>2</b><span>Deep-dive TCO reports</span></div>
 <div class="stat"><b>2&times;</b><span>Minimum H100 bundle</span></div>
 <div class="stat"><b>+46%</b><span>Headline vs effective rate</span></div>
 </div>
 
 <div class="section-head"><h2>Published research</h2><span>MOST RECENT FIRST</span></div>
 <section class="cards" aria-label="Published articles">
+
+<article class="card">
+<span class="tag">GPU cloud cost notes / head-to-head</span>
+<h3><a href="/blog/runpod-vs-vastai-h100-a100.html">RunPod vs Vast.ai (2026): Real H100 &amp; A100 Effective Cost After Cold-Start, NVMe Storage &amp; Bandwidth Billing</a></h3>
+<p>Vast.ai lists H100 SXM about 25% below RunPod and still loses a two-hour test by 63% once 150 GB of ingress, a 40-minute pull and a 15% failover reserve are priced in. The same arithmetic reverses on a 72-hour preemptible fine-tune. Six billing dimensions and three workloads, all in dollars per useful GPU-hour.</p>
+<ul class="datas">
+<li>Scenario A: Vast $8.86 vs RunPod $5.42 for one test</li>
+<li>Scenario B: RunPod wins above 5.4 TB/month egress</li>
+<li>Scenario C: Vast saves $314.52 on a 72-hour run</li>
+</ul>
+<div class="foot"><span>19 October 2026</span><span>~2,400 words &middot; ~11 min</span><a class="read" href="/blog/runpod-vs-vastai-h100-a100.html">Read the teardown &rarr;</a></div>
+</article>
 
 <article class="card">
 <span class="tag">GPU cloud cost notes / rental trap</span>
