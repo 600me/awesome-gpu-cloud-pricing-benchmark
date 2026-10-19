@@ -21,6 +21,29 @@ LINKS = {
     "OpenRouter": "https://go.272738.xyz/openrouter",
     "DeepInfra": "https://go.272738.xyz/deepinfra",
 }
+# Calculators, research pages and the public mirror. Kept in one place so every
+# regeneration of index.html and README.md emits the same navigation.
+RESEARCH = [
+    ("VRAM & Cost Calculator", "/calculator/"),
+    ("All research (blog index)", "/blog/"),
+    ("The H100 rental trap", "/blog/h100-rental-trap.html"),
+    ("RunPod vs Vast.ai real cost", "/blog/runpod-vs-vastai-h100-a100.html"),
+    ("HF Space: LLM GPU cost calculator", "https://huggingface.co/spaces/600me/llm-gpu-cost-calculator"),
+]
+RESEARCH_CARDS = [
+    ("VRAM &amp; Cost Calculator",
+     "Size the model to the card before renting: 7B/13B/70B/405B at FP16, INT8 and INT4, "
+     "plus 100 GPU-hour and egress math. Free, no signup.",
+     "/calculator/", "Open the calculator &rarr;"),
+    ("The H100 rental trap",
+     "Why the cheap hourly number is not the bill: cold-start, NVMe and egress change "
+     "dollars per useful GPU-hour.",
+     "/blog/h100-rental-trap.html", "Read the H100 rental trap &rarr;"),
+    ("RunPod vs Vast.ai",
+     "Catalog tier and marketplace offer are different purchase conditions. Three workloads, "
+     "dollars per useful GPU-hour, egress crossover at 5.4 TB/month.",
+     "/blog/runpod-vs-vastai-h100-a100.html", "Read the H100 real-cost teardown &rarr;"),
+]
 ENDPOINTS = {
     "RunPod": "https://api.runpod.io/graphql",
     "Vast.ai": "https://console.vast.ai/api/v0/bundles/",
@@ -271,7 +294,10 @@ def render_readme(data):
            "then compare Together.ai, OpenRouter and DeepInfra API costs before your next deployment.", "",
            cost_example(data), "",
            "[Launch on RunPod](" + LINKS["RunPod"] + ") · [Find a Vast.ai GPU](" + LINKS["Vast.ai"] + ")", "",
-           "## Cheapest H100 GPU cloud: hourly price matrix", "",
+           "## Calculators and deep research", "",
+           "Free tools and dollar-per-useful-GPU-hour teardowns behind this dashboard:", ""]
+    out += [f"- [{label}]({url})" for label, url in RESEARCH]
+    out += ["", "## Cheapest H100 GPU cloud: hourly price matrix", "",
            "Compute-only prices per GPU-hour; storage, bandwidth, tax and setup time can add to your bill. "
            "A sampled minimum is not a market-wide cheapest claim. Multi-GPU bundles require the full bundle payment.", "",
            "| Provider / tier | GPU | VRAM | USD / GPU-hour | 100 GPU-hours | Evidence | Launch |",
@@ -362,6 +388,7 @@ def render_html(data):
 <p class="intro"><a href="https://gpu.mybskm.top/">Live pricing dashboard</a></p>
 <p class="intro">Searching for the cheapest H100 GPU cloud? Compare RunPod vs Vast.ai, then check the DeepSeek R1 / V3 API pricing benchmark before paying for idle compute or costly output tokens.</p>
 <p class="intro">Snapshot generated <time>__TIME__</time>. Every row labels its quote source and date.</p>
+<nav class="providers" aria-label="Calculators and deep research">__RESEARCH_NAV__</nav>
 <section class="callout"><strong>Same GPU-hours. Different bill.</strong><p>__EXAMPLE__</p><nav class="providers" aria-label="Provider deployment links">__NAV__</nav></section>
 <div class="tools"><div role="tablist" aria-label="Pricing type"><button id="gpu-tab" role="tab" aria-selected="true" aria-controls="pricing">GPU cloud</button> <button id="llm-tab" role="tab" aria-selected="false" aria-controls="pricing">LLM APIs</button></div>
 <input id="search" type="search" aria-label="Fuzzy search models or providers" placeholder="Search H100, DeepSeek, RunPod…">
@@ -369,10 +396,10 @@ def render_html(data):
 <p id="count" aria-live="polite"></p><section id="pricing" role="tabpanel" aria-labelledby="gpu-tab" class="tablewrap"><table><thead id="thead"></thead><tbody id="rows"></tbody></table></section>
 <p class="intro" id="units"></p><noscript>Enable JavaScript for filtering and sorting. The accompanying README.md contains the full static pricing matrices.</noscript>
 <section class="cards">
-<article class="card"><h2>RunPod vs Vast.ai</h2><p>Catalog tier and marketplace offer are different purchase conditions. Check GPU count, storage, reliability and availability before launching.</p></article>
+__RESEARCH_CARDS__
 <article class="card"><h2>Tokens add up</h2><p>The API example uses 10M input + 2M output tokens. A $1/1M output-rate gap costs $2 on that workload. Reasoning tokens can increase billed output.</p></article>
 <article class="card"><h2>Read the exact model</h2><p>0324, 0528 and Turbo are distinct variants. Together R1 is unavailable on Serverless; its missing quote stays N/A. Check current deployment options via the provider buttons.</p></article>
-</section><footer>USD quote comparison, not a latency or quality benchmark. Live = API quote this run; cache = earlier quote, retaining origin/date; baseline = dated reference; N/A = unavailable price. Prices exclude tax and variable extras. The lowest sampled rate is not a market-wide guarantee. Fixed relay buttons do not verify destinations, affiliate status or commissions. No rentals or paid inference are performed.<nav aria-label="Sister projects"><a href="https://proxy.mybskm.top">Proxy benchmark</a> · <a href="https://pay.mybskm.top">Payments calculator</a> · <a href="https://scrape.mybskm.top">Scraping APIs</a></nav></footer>
+</section><footer>USD quote comparison, not a latency or quality benchmark. Live = API quote this run; cache = earlier quote, retaining origin/date; baseline = dated reference; N/A = unavailable price. Prices exclude tax and variable extras. The lowest sampled rate is not a market-wide guarantee. Fixed relay buttons do not verify destinations, affiliate status or commissions. No rentals or paid inference are performed.<nav aria-label="Sister projects"><a href="https://proxy.mybskm.top">Proxy benchmark</a> · <a href="https://pay.mybskm.top">Payments calculator</a> · <a href="https://scrape.mybskm.top">Scraping APIs</a> · <a href="https://scrape.mybskm.top/calculator/">Scraping TCO calculator</a></nav><nav aria-label="Calculators and research">__RESEARCH_FOOTER__</nav></footer>
 </main><script id="snapshot" type="application/json">__DATA__</script><script>
 'use strict';
 const data=JSON.parse(document.getElementById('snapshot').textContent);
@@ -400,9 +427,22 @@ function render(){
 for(const next of ['gpu','llm'])$(next+'-tab').addEventListener('click',()=>{mode=next;for(const m of ['gpu','llm'])$(m+'-tab').setAttribute('aria-selected',String(m===mode));$('pricing').setAttribute('aria-labelledby',next+'-tab');render();});
 $('search').addEventListener('input',render);$('sort').addEventListener('change',render);render();
 </script></body></html>'''
+    research_nav = " ".join(
+        f'<a href="{html.escape(url, quote=True)}" rel="noopener">{html.escape(label)}'
+        f'{" ↗" if url.startswith("http") else ""}</a>' for label, url in RESEARCH)
+    research_cards = "\n".join(
+        f'<article class="card"><h2>{title}</h2><p>{body}</p>'
+        f'<p><a href="{url}" rel="noopener">{cta}</a></p></article>'
+        for title, body, url, cta in RESEARCH_CARDS)
+    research_footer = " · ".join(
+        f'<a href="{html.escape(url, quote=True)}" rel="noopener">{html.escape(label)}</a>'
+        for label, url in RESEARCH)
     return (template.replace("__TIME__", html.escape(data["generated_at"]))
             .replace("__EXAMPLE__", html.escape(cost_example(data)))
-            .replace("__NAV__", nav).replace("__DATA__", payload))
+            .replace("__NAV__", nav).replace("__DATA__", payload)
+            .replace("__RESEARCH_NAV__", research_nav)
+            .replace("__RESEARCH_CARDS__", research_cards)
+            .replace("__RESEARCH_FOOTER__", research_footer))
 
 
 def atomic_write(path, content):
