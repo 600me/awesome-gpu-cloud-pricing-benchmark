@@ -33,6 +33,12 @@ A single-file, zero-dependency static Space for sizing LLM inference on rented G
 - `index.html` — the complete calculator, styles and vanilla JS.
 - `README.md` — this Space card and static SDK metadata.
 
+## Sister tools
+
+- [LLM & RAG web-scraping TCO calculator](https://huggingface.co/spaces/600me/rag-web-scraping-cost-calculator)
+- [Main-site scraping calculator](https://scrape.mybskm.top/calculator/)
+- [GPU price dashboard](https://gpu.mybskm.top/)
+
 ## Disclosure
 
 The RunPod and Vast.ai buttons are affiliate links (`utm_source=gpu_calculator&utm_medium=cta`). We may earn a commission at no additional cost to the visitor. Providers set their own prices, inventory and terms; the calculator is a planning tool, not a quote or a deployment guarantee.
