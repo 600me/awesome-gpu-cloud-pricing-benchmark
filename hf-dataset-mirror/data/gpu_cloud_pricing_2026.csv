@@ -1,0 +1,29 @@
+provider,gpu_model,vram_gb,tier,usd_per_gpu_hour,usd_per_100_gpu_hours,bundle_min_gpus,nvme_usd_per_gb_month,cold_start_minutes,egress_usd_per_gb,storage_usd_per_hour_150gb,cold_start_usd_per_hour,effective_usd_per_useful_hour,source_url,observed_at
+RunPod,H100 SXM,80,Community,2.69,269.0,1,0.1,0.6,0.0,0.0205,0.0034,3.193,https://api.runpod.io/graphql,2026-10-19
+RunPod,H100 SXM,80,Secure,3.99,399.0,1,0.1,0.6,0.0,0.0205,0.005,4.724,https://api.runpod.io/graphql,2026-10-19
+RunPod,H100 PCIe,80,Community,1.99,199.0,1,0.1,0.7,0.0,0.0205,0.0029,2.369,https://api.runpod.io/graphql,2026-10-19
+RunPod,H100 PCIe,80,Secure,2.89,289.0,1,0.1,0.7,0.0,0.0205,0.0042,3.429,https://api.runpod.io/graphql,2026-10-19
+RunPod,A100 80G SXM,80,Community,1.39,139.0,1,0.1,0.8,0.0,0.0205,0.0023,1.662,https://api.runpod.io/graphql,2026-10-19
+RunPod,A100 80G SXM,80,Secure,1.79,179.0,1,0.1,0.8,0.0,0.0205,0.003,2.134,https://api.runpod.io/graphql,2026-10-19
+RunPod,A100 80G PCIe,80,Community,1.19,119.0,1,0.1,0.9,0.0,0.0205,0.0022,1.427,https://api.runpod.io/graphql,2026-10-19
+RunPod,A100 80G PCIe,80,Secure,1.79,179.0,1,0.1,0.9,0.0,0.0205,0.0034,2.134,https://api.runpod.io/graphql,2026-10-19
+RunPod,L40S,48,Community,0.99,99.0,1,0.1,0.8,0.0,0.0205,0.0016,1.191,https://api.runpod.io/graphql,2026-10-19
+RunPod,RTX 4090,24,Community,0.34,34.0,1,0.1,1.2,0.0,0.0205,0.0009,0.425,https://api.runpod.io/graphql,2026-10-19
+RunPod,RTX 4090,24,Secure,0.89,89.0,1,0.1,1.2,0.0,0.0205,0.0022,1.074,https://api.runpod.io/graphql,2026-10-19
+Vast.ai,H100 SXM,80,Verified on-demand,1.788,178.8,2,0.06,1.5,0.0,0.0123,0.0056,2.125,https://console.vast.ai/api/v0/bundles/,2026-10-19
+Vast.ai,H100 PCIe,80,Verified on-demand,2.001,200.1,1,0.06,1.6,0.0,0.0123,0.0067,2.376,https://console.vast.ai/api/v0/bundles/,2026-10-19
+Vast.ai,A100 80G SXM,80,Verified on-demand,0.989,98.9,1,0.06,1.8,0.0,0.0123,0.0037,1.182,https://console.vast.ai/api/v0/bundles/,2026-10-19
+Vast.ai,A100 80G PCIe,80,Verified on-demand,0.802,80.2,1,0.06,1.9,0.0,0.0123,0.0032,0.962,https://console.vast.ai/api/v0/bundles/,2026-10-19
+Vast.ai,RTX 4090,24,Verified on-demand,0.456,45.6,1,0.06,2.0,0.0,0.0123,0.0019,0.553,https://console.vast.ai/api/v0/bundles/,2026-10-19
+Lambda,H100 SXM,80,On-demand,2.99,299.0,1,0.0,2.0,0.0,0.0,0.0125,3.532,https://lambda.ai/pricing,2026-10-19
+Lambda,A100 40G SXM,40,On-demand,1.29,129.0,1,0.0,2.0,0.0,0.0,0.0054,1.524,https://lambda.ai/pricing,2026-10-19
+Lambda,L40S,48,On-demand,0.86,86.0,1,0.0,2.0,0.0,0.0,0.0036,1.016,https://lambda.ai/pricing,2026-10-19
+CoreWeave,H100 SXM,80,On-demand,4.76,476.0,1,0.05,1.0,0.0,0.0103,0.0099,5.624,https://www.coreweave.com/pricing,2026-10-19
+CoreWeave,L40S,48,On-demand,1.99,199.0,1,0.05,1.0,0.0,0.0103,0.0041,2.358,https://www.coreweave.com/pricing,2026-10-19
+AWS,H100 SXM (p5.48xlarge),80,"On-demand, 8-GPU node",12.29,1229.0,8,0.08,0.4,0.09,0.0164,0.0102,14.49,https://aws.amazon.com/ec2/pricing/on-demand/,2026-10-19
+AWS,A100 40G (p4d.24xlarge),40,"On-demand, 8-GPU node",4.1,410.0,8,0.08,0.4,0.09,0.0164,0.0034,4.847,https://aws.amazon.com/ec2/pricing/on-demand/,2026-10-19
+AWS,L40S (g6e.xlarge),48,"On-demand, 1-GPU node",1.861,186.1,1,0.08,0.4,0.09,0.0164,0.0016,2.211,https://aws.amazon.com/ec2/pricing/on-demand/,2026-10-19
+GCP,H100 SXM (a3-highgpu-8g),80,"On-demand, 8-GPU node",11.06,1106.0,8,0.09,0.4,0.12,0.0185,0.0092,13.044,https://cloud.google.com/compute/gpus-pricing,2026-10-19
+GCP,A100 40G (a2-highgpu-1g),40,"On-demand, 1-GPU node",3.67,367.0,1,0.09,0.4,0.12,0.0185,0.0031,4.343,https://cloud.google.com/compute/gpus-pricing,2026-10-19
+Azure,H100 SXM (ND96isr v5),80,"On-demand, 8-GPU node",12.29,1229.0,8,0.08,0.4,0.09,0.0164,0.0102,14.49,https://azure.microsoft.com/pricing/details/virtual-machines/linux/,2026-10-19
+Azure,A100 80G (NC24ads v4),80,"On-demand, 1-GPU node",3.67,367.0,1,0.08,0.4,0.09,0.0164,0.0031,4.341,https://azure.microsoft.com/pricing/details/virtual-machines/linux/,2026-10-19
