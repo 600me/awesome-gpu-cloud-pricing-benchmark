@@ -154,12 +154,12 @@ SCRAPE_ROWS = [
     ("ZenRows", "credits", 49.00, 250000, 0.000196, 5, 10, 1, 1.5, "https://www.zenrows.com/pricing"),
     ("ScrapingBee", "credits", 49.00, 150000, 0.000327, 5, 10, 1, 2.2, "https://www.scrapingbee.com/pricing/"),
     ("ScraperAPI", "credits", 49.00, 100000, 0.000490, 5, 10, 1, 3.5, "https://www.scraperapi.com/pricing/"),
-    ("Crawlbase", "credits", 29.00, 20000, 0.001450, 5, 0, 1, 4.8, "https://crawlbase.com/pricing"),
+    ("Crawlbase", "credits", 29.00, 20000, 0.001450, 5, 1, 1, 4.8, "https://crawlbase.com/pricing"),
     ("Bright Data", "requests", 499.00, 332667, 0.001500, 1, 1, 1, 0.5, "https://brightdata.com/pricing/web-unlocker"),
     ("Smartproxy (Decodo) Residential", "bandwidth", 350.00, 100, 3.500000, 1, 1, 1, 15.0, "https://decodo.com/proxies/residential-proxies/pricing"),
-    ("Self-Hosted Playwright (4 vCPU VPS)", "bandwidth", 24.00, 1, 0.000400, 1, 1, 1, 15.0, "https://github.com/600me/check-proxy-tax"),
+    ("Self-Hosted Playwright (4 vCPU VPS)", "infra", 24.00, 1, 0.000400, 1, 1, 1, 15.0, "https://github.com/600me/check-proxy-tax"),
 ]
-SCRAPE_BITS = ["vendor", "pricing_model", "plan_usd_month", "included_units", "unit_cost_usd",
+SCRAPE_BITS = ["vendor", "scenario", "pricing_model", "plan_usd_month", "included_units", "unit_cost_usd",
                "js_render_multiplier", "premium_proxy_multiplier", "base_credits_per_page",
                "credits_per_attempt_js_premium", "credits_per_attempt_raw", "block_rate_pct",
                "attempts_per_clean_page", "cost_per_1k_clean_usd", "cost_per_100k_clean_usd",
@@ -169,20 +169,30 @@ PAGES_PER_GB = 5825  # 180 KB/page
 
 def scrape_rows():
     out = []
+    rows = []
     for vendor, model, plan, units, unit_cost, js, prem, base, block, src in SCRAPE_ROWS:
+        rows.append((vendor, model, plan, units, unit_cost, js, prem, base, 0.0, block, src))
+        rows.append((vendor, model, plan, units, unit_cost, js, prem, base, 8.0,
+                     min(block + 8.0, 60.0), src))
+    for vendor, model, plan, units, unit_cost, js, prem, base, bump, block, src in rows:
         attempts = 1.0 / (1.0 - block / 100.0)
         if model == "credits":
             credits_js = base * js * prem
             credits_raw = base
             cost_page = unit_cost * credits_js * attempts
             cost_page_raw = unit_cost * credits_raw * attempts
-            note = "Credit-based: JS render x%d, premium proxy x%d, retry amplification %.3fx" % (js, prem, attempts)
+            note = "Credit-based: JS render x%d, premium proxy x%d, retry amplification %.3fx%s" % (js, prem, attempts, "" if bump == 0 else "; hard-target stress adds 8pp block")
         elif model == "requests":
             credits_js = 1
             credits_raw = 1
             cost_page = unit_cost * attempts
             cost_page_raw = unit_cost * attempts
             note = "Per-request billing; managed unblocker already includes JS + premium egress"
+        elif model == "infra":
+            credits_js = credits_raw = 0
+            cost_page = unit_cost * attempts
+            cost_page_raw = unit_cost * attempts
+            note = "Own VPS at $24/mo modelled at 60,000 rendered pages/mo ($0.0004/page) before retries"
         else:
             gb_per_page = 0.180 / 1024.0
             cost_page = unit_cost * gb_per_page * attempts
@@ -190,7 +200,8 @@ def scrape_rows():
             note = "Bandwidth-billed at 180 KB/page; failed and challenge pages bill the same bytes"
             credits_js = credits_raw = 0
         out.append({
-            "vendor": vendor, "pricing_model": model, "plan_usd_month": plan,
+            "vendor": vendor, "scenario": "measured" if bump == 0 else "hard_target_plus8pp",
+            "pricing_model": model, "plan_usd_month": plan,
             "included_units": units, "unit_cost_usd": round(unit_cost, 6),
             "js_render_multiplier": js, "premium_proxy_multiplier": prem,
             "base_credits_per_page": base, "credits_per_attempt_js_premium": credits_js,
@@ -334,8 +345,9 @@ def common_links(ds):
 
 def matrix_footer(ds):
     ds_links = "\n".join(
-        "- [%s](https://huggingface.co/datasets/%s)" % (DATASETS[k][0].split("/")[1], DATASETS[k][0])
-        for k in DATASETS if k != ds)
+        "- [%s](https://huggingface.co/datasets/%s)%s" % (
+            DATASETS[k][0].split("/")[1], DATASETS[k][0], "  ← this dataset" if k == ds else "")
+        for k in DATASETS)
     space_links = "\n".join(
         "- [%s](%s)" % (DATASETS[k][0].split("/")[1], LINKS[k]["space"]) for k in DATASETS
     )
@@ -450,8 +462,8 @@ $%.2f/h advertised — a %.0f%% gap between the invoice line and the cost of use
 def scrape_readme():
     rows = scrape_rows()
     table = "\n".join(
-        "| %s | %s | %d | %.2f%% | $%.2f | $%.0f |" % (
-            r["vendor"], r["credits_per_attempt_js_premium"], r["block_rate_pct"] * 100 / 100,
+        "| %s | %s | %s | %.1f%% | $%.2f | $%.0f |" % (
+            r["vendor"], r["scenario"], r["credits_per_attempt_js_premium"],
             r["block_rate_pct"], r["cost_per_1k_clean_usd"], r["cost_per_100k_clean_usd"])
         for r in rows)
     return frontmatter(
@@ -477,6 +489,7 @@ attempts into one comparable number: **USD per 1,000 clean pages**.
 | Column | Type | Meaning |
 |---|---|---|
 | `vendor` | string | ScraperAPI, ZenRows, ScrapingBee, Crawlbase, Bright Data, Smartproxy residential, self-hosted Playwright |
+| `scenario` | string | `measured` or `hard_target_plus8pp` stress case |
 | `pricing_model` | string | `credits`, `requests` or `bandwidth` |
 | `plan_usd_month` | float | Entry plan used for unit economics |
 | `included_units` | int | Credits / requests / GB in that plan |
@@ -504,8 +517,8 @@ Playwright, where no managed unblocker sits in front of the request.
 
 ## Summary table
 
-| Vendor | Credits/attempt (JS+premium) | Block % | $/1k clean | $/100k clean |
-|---|---|---|---|---|
+| Vendor | Scenario | Credits/attempt (JS+premium) | Block % | $/1k clean | $/100k clean |
+|---|---|---|---|---|---|
 %s
 
 Note the ordering inversion: the vendor with the lowest credit burn is not the vendor with the lowest

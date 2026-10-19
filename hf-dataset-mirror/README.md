@@ -126,6 +126,7 @@ $0.34/h advertised — a 25% gap between the invoice line and the cost of useful
 - [global-saas-mor-vs-us-llc-fee-matrix](https://huggingface.co/spaces/600me/ai-saas-stripe-vs-mor-tax-calculator)
 
 **HuggingFace Datasets**
+- [gpu-cloud-h100-a100-pricing-benchmark](https://huggingface.co/datasets/600me/gpu-cloud-h100-a100-pricing-benchmark)  ← this dataset
 - [web-scraping-anti-bot-api-benchmark](https://huggingface.co/datasets/600me/web-scraping-anti-bot-api-benchmark)
 - [residential-proxy-commercial-policy-matrix](https://huggingface.co/datasets/600me/residential-proxy-commercial-policy-matrix)
 - [global-saas-mor-vs-us-llc-fee-matrix](https://huggingface.co/datasets/600me/global-saas-mor-vs-us-llc-fee-matrix)
