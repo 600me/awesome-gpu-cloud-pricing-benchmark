@@ -7,7 +7,7 @@
 <meta name="description" content="Vast.ai lists H100 capacity about 25% below RunPod. After egress at $0.01-$0.08/GB, pre-pull cold start and a 15% failover reserve, a 150GB two-hour test is 63% more expensive on Vast and a 24/7 node flips to RunPod above 5.4TB/month. Three workloads, exact dollars.">
 <link rel="canonical" href="https://gpu.mybskm.top/blog/runpod-vs-vastai-h100-a100.html">
 <meta name="robots" content="index,follow,max-image-preview:large">
-<meta name="author" content="600me">
+<meta name="author" content="cloudbench">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="GPU Cloud Pricing Benchmark">
 <meta property="og:title" content="RunPod vs Vast.ai (2026): Real H100 &amp; A100 Effective Cost After Cold-Start, NVMe Storage &amp; Bandwidth Billing">
@@ -16,7 +16,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-10-19T08:00:00Z">
 <meta property="article:modified_time" content="2026-10-19T08:00:00Z">
-<meta property="article:author" content="600me">
+<meta property="article:author" content="cloudbench">
 <meta property="article:section" content="GPU Cloud Economics">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RunPod vs Vast.ai: the H100 bill after bandwidth and cold start">
@@ -34,7 +34,7 @@
   "inLanguage": "en",
   "articleSection": "GPU Cloud Economics",
   "keywords": "runpod vs vast.ai, h100 80gb price, a100 80gb price, gpu egress cost, flashboot, cold start, nvme storage, llm fine-tuning cost, vllm inference cost",
-  "author": {"@type": "Person", "name": "600me", "url": "https://github.com/600me"},
+  "author": {"@type": "Person", "name": "cloudbench", "url": "https://github.com/cloudbench"},
   "publisher": {
     "@type": "Organization",
     "name": "GPU Cloud Pricing Benchmark",
@@ -110,7 +110,7 @@ footer nav{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:10px}
 <div class="eyebrow">GPU CLOUD ECONOMICS / HEAD-TO-HEAD</div>
 <h1>RunPod vs Vast.ai (2026): Real H100 &amp; A100 Effective Cost After Cold-Start, NVMe Storage &amp; Bandwidth Billing</h1>
 <p class="standfirst">On the sticker, Vast.ai rents H100 SXM capacity about <strong>25%</strong> below RunPod's Community Cloud ($2.01 against $2.69) and A100 80GB about <strong>26%</strong> below its Secure tier ($1.319 against $1.79). On the invoice, a two-hour model test is <strong>63%</strong> more expensive on Vast and a 7&times;24 production node flips to RunPod above <strong>5.4 TB/month</strong> of transfer &mdash; while a 72-hour preemptible fine-tune is still <strong>52.8% cheaper</strong> on Vast. Same two providers, three different winners.</p>
-<p class="meta"><span>By <strong>600me</strong></span><span><time datetime="2026-10-19T08:00:00Z">19 October 2026</time></span><span>Rates: live API snapshot 2026-10-18T16:37:25Z &middot; USD</span></p>
+<p class="meta"><span>By <strong>cloudbench</strong></span><span><time datetime="2026-10-19T08:00:00Z">19 October 2026</time></span><span>Rates: live API snapshot 2026-10-18T16:37:25Z &middot; USD</span></p>
 <aside class="ftc"><strong>Affiliate disclosure (FTC).</strong> This article contains affiliate links for RunPod and Vast.ai. If you rent capacity through them, this site may earn a commission at no extra cost to you. That has no effect on the arithmetic, the ordering of the tables or which provider wins a scenario &mdash; the two links are worth the same, and one scenario below is deliberately won by each provider. Rates are a planning baseline captured from the providers' own APIs, not a quote; GPU markets move daily and host-set network rates vary per machine.</aside>
 
 <h2>The two prices on every GPU page, and the third one that decides the bill</h2>
@@ -272,7 +272,7 @@ print(json.dumps({
 <h2>Price your own workload</h2>
 <p>The calculator takes GPU model, hours, utilisation, egress and storage and returns the effective dollars per useful GPU-hour, so you can put your own numbers into the tables above.</p>
 <a class="btn" href="https://gpu.mybskm.top/calculator/" rel="noopener">Open the GPU cost calculator &nearr;</a>
-<a class="btn alt" href="https://huggingface.co/spaces/600me/llm-gpu-cost-calculator" target="_blank" rel="noopener">Run it on Hugging Face Spaces &nearr;</a>
+<a class="btn alt" href="https://cloud-infra-tco-benchmarks.readthedocs.io/en/latest/cloud-gpu-and-ai-media-unit-economics/" target="_blank" rel="noopener">Read the Docs TCO Handbook ↗</a>
 </div>
 
 <div class="cta-panel">

@@ -266,8 +266,8 @@
       "source": "live",
       "observed_at": "2026-11-03T20:10:20Z",
       "reference_date": "2026-10-16T00:00:00Z",
-      "source_url": "https://openrouter.ai/api/v1/models",
-      "link": "https://openrouter.ai",
+      "source_url": "https://go.272738.xyz/openrouter?src=gpu_home/api/v1/models",
+      "link": "https://go.272738.xyz/openrouter?src=gpu_home",
       "fetch_status": "live",
       "one_m_each_usd": 1.2861,
       "example_10m_input_2m_output_usd": 4.6314
@@ -282,8 +282,8 @@
       "source": "cache",
       "observed_at": "2026-10-18T16:37:25Z",
       "reference_date": "2026-10-16T00:00:00Z",
-      "source_url": "https://openrouter.ai/api/v1/models",
-      "link": "https://openrouter.ai",
+      "source_url": "https://go.272738.xyz/openrouter?src=gpu_home/api/v1/models",
+      "link": "https://go.272738.xyz/openrouter?src=gpu_home",
       "cached_source": "live",
       "fetch_status": "live",
       "one_m_each_usd": 3.2,
@@ -299,8 +299,8 @@
       "source": "live",
       "observed_at": "2026-11-03T20:10:20Z",
       "reference_date": "2026-10-16T00:00:00Z",
-      "source_url": "https://openrouter.ai/api/v1/models",
-      "link": "https://openrouter.ai",
+      "source_url": "https://go.272738.xyz/openrouter?src=gpu_home/api/v1/models",
+      "link": "https://go.272738.xyz/openrouter?src=gpu_home",
       "fetch_status": "live",
       "one_m_each_usd": 0.72,
       "example_10m_input_2m_output_usd": 3.04
@@ -316,7 +316,7 @@
       "observed_at": "2026-11-03T20:10:20Z",
       "reference_date": "2026-10-16T00:00:00Z",
       "source_url": "https://api.deepinfra.com/models/list",
-      "link": "https://deepinfra.com",
+      "link": "https://go.272738.xyz/deepinfra?src=gpu_home",
       "fetch_status": "live",
       "one_m_each_usd": 1.21,
       "example_10m_input_2m_output_usd": 4.98
@@ -332,7 +332,7 @@
       "observed_at": "2026-11-03T20:10:20Z",
       "reference_date": "2026-10-16T00:00:00Z",
       "source_url": "https://api.deepinfra.com/models/list",
-      "link": "https://deepinfra.com",
+      "link": "https://go.272738.xyz/deepinfra?src=gpu_home",
       "fetch_status": "live",
       "one_m_each_usd": 2.65,
       "example_10m_input_2m_output_usd": 9.3
@@ -348,7 +348,7 @@
       "observed_at": "2026-11-03T20:10:20Z",
       "reference_date": "2026-10-16T00:00:00Z",
       "source_url": "https://api.deepinfra.com/models/list",
-      "link": "https://deepinfra.com",
+      "link": "https://go.272738.xyz/deepinfra?src=gpu_home",
       "fetch_status": "live",
       "one_m_each_usd": 0.42,
       "example_10m_input_2m_output_usd": 1.64
@@ -363,8 +363,8 @@
       "source": "cache",
       "observed_at": null,
       "reference_date": "2026-10-16T00:00:00Z",
-      "source_url": "https://www.together.ai/models/deepseek-v3",
-      "link": "https://www.together.ai",
+      "source_url": "https://go.272738.xyz/together?src=gpu_home/models/deepseek-v3",
+      "link": "https://go.272738.xyz/together?src=gpu_home",
       "cached_source": "baseline",
       "fetch_status": "HTTPError; fallback",
       "one_m_each_usd": 2.5,
@@ -380,8 +380,8 @@
       "source": "null",
       "observed_at": null,
       "reference_date": "2026-10-16T00:00:00Z",
-      "source_url": "https://www.together.ai/models/deepseek-r1",
-      "link": "https://www.together.ai",
+      "source_url": "https://go.272738.xyz/together?src=gpu_home/models/deepseek-r1",
+      "link": "https://go.272738.xyz/together?src=gpu_home",
       "fetch_status": "HTTPError; fallback",
       "one_m_each_usd": null,
       "example_10m_input_2m_output_usd": null
@@ -396,8 +396,8 @@
       "source": "cache",
       "observed_at": null,
       "reference_date": "2026-10-16T00:00:00Z",
-      "source_url": "https://www.together.ai/pricing",
-      "link": "https://www.together.ai",
+      "source_url": "https://go.272738.xyz/together?src=gpu_home/pricing",
+      "link": "https://go.272738.xyz/together?src=gpu_home",
       "cached_source": "baseline",
       "fetch_status": "HTTPError; fallback",
       "one_m_each_usd": 2.08,
@@ -410,9 +410,9 @@
   "links": {
     "RunPod": "https://go.272738.xyz/runpod?src=gpu_home",
     "Vast.ai": "https://go.272738.xyz/vastai?src=gpu_home",
-    "Together.ai": "https://www.together.ai",
-    "OpenRouter": "https://openrouter.ai",
-    "DeepInfra": "https://deepinfra.com"
+    "Together.ai": "https://go.272738.xyz/together?src=gpu_home",
+    "OpenRouter": "https://go.272738.xyz/openrouter?src=gpu_home",
+    "DeepInfra": "https://go.272738.xyz/deepinfra?src=gpu_home"
   },
   "providers": {
     "RunPod": {
@@ -434,7 +434,7 @@
       "live_rows": 0
     },
     "OpenRouter": {
-      "endpoint": "https://openrouter.ai/api/v1/models",
+      "endpoint": "https://go.272738.xyz/openrouter?src=gpu_home/api/v1/models",
       "http_status": 200,
       "result": "live",
       "live_rows": 2

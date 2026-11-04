@@ -34,7 +34,7 @@ RESEARCH = [
     ("All research (blog index)", "/blog/"),
     ("The H100 rental trap", "/blog/h100-rental-trap.html"),
     ("RunPod vs Vast.ai real cost", "/blog/runpod-vs-vastai-h100-a100.html"),
-    ("HF Space: LLM GPU cost calculator", "https://huggingface.co/spaces/600me/llm-gpu-cost-calculator"),
+    ("HF Space: LLM GPU cost calculator", "https://gpu.mybskm.top/calculator/"),
 ]
 RESEARCH_CARDS = [
     ("VRAM &amp; Cost Calculator",
@@ -152,7 +152,7 @@ def fetch_provider(provider, now):
     """Catch every provider failure locally; return usable rows and public status."""
     rows, status = {}, {"endpoint": ENDPOINTS[provider], "http_status": None}
     try:
-        kwargs = {"timeout": TIMEOUT, "headers": {"User-Agent": "Kais-GPU-Pricing/1.0"}}
+        kwargs = {"timeout": TIMEOUT, "headers": {"User-Agent": "CloudBench-GPU-Pricing/1.0"}}
         method = "GET"
         if provider == "RunPod":
             method = "POST"
@@ -346,7 +346,7 @@ def render_readme(data):
             "Product buttons point at an attributed relay for activated partners (RunPod, Vast.ai) and at the "
             "vendor's own website for unactivated ones (Together.ai, OpenRouter, DeepInfra), so no click depends "
             "on an inactive affiliate account. Visiting a provider does not purchase compute.", ""]
-    out += ['', '## Sister Projects (Matrix Interlinks)', '', '- [Proxy Infrastructure Benchmark](https://proxy.mybskm.top) · [GitHub repository](https://github.com/600me/awesome-residential-proxies-benchmark)', '- [Global GPU Cloud Benchmark](https://gpu.mybskm.top) · [GitHub repository](https://github.com/600me/awesome-gpu-cloud-pricing-benchmark)', '- [Global Payments Matrix](https://pay.mybskm.top) · [GitHub repository](https://github.com/600me/awesome-indie-global-payments-matrix)', '- [Web Scraping APIs Benchmark](https://scrape.mybskm.top) · [GitHub repository](https://github.com/600me/awesome-web-scraping-apis-benchmark)', '']
+    out += ['', '## Sister Projects (Matrix Interlinks)', '', '- [Proxy Infrastructure Benchmark](https://proxy.mybskm.top)', '- [Global GPU Cloud Benchmark](https://gpu.mybskm.top)', '- [Global Payments Matrix](https://pay.mybskm.top)', '- [Web Scraping APIs Benchmark](https://scrape.mybskm.top)', '']
     return "\n".join(out)
 
 

@@ -7,7 +7,7 @@
 <meta name="description" content="Live H100 and A100 catalogue rates, bundle minimums, utilization, and restart overhead: how to calculate the effective cost of a useful GPU-hour before you rent.">
 <link rel="canonical" href="https://gpu.mybskm.top/blog/h100-rental-trap.html">
 <meta name="robots" content="index,follow,max-image-preview:large">
-<meta name="author" content="600me">
+<meta name="author" content="cloudbench">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="GPU Cloud Pricing Benchmark">
 <meta property="og:title" content="The H100 Rental Trap: Why $2.13 per GPU-Hour Is Not the Price You Pay">
@@ -16,7 +16,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-10-18T14:35:55Z">
 <meta property="article:modified_time" content="2026-10-18T16:00:00Z">
-<meta property="article:author" content="600me">
+<meta property="article:author" content="cloudbench">
 <meta property="article:section" content="GPU Cloud Cost Notes">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="The H100 Rental Trap: Why $2.13 per GPU-Hour Is Not the Price You Pay">
@@ -29,7 +29,7 @@
   "description": "Live H100 and A100 catalogue rates, bundle minimums, utilization, and restart overhead: how to calculate the effective cost of a useful GPU-hour before you rent.",
   "author": {
     "@type": "Person",
-    "name": "600me",
+    "name": "cloudbench",
     "url": "https://gpu.mybskm.top/"
   },
   "publisher": {
@@ -105,7 +105,7 @@ footer nav{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:10px}
 <div class="eyebrow">GPU CLOUD COST NOTES / RENTAL TRAP</div>
 <h1>The H100 Rental Trap: Why $2.13 per GPU-Hour Is Not the Price You Pay</h1>
 <p class="standfirst">Live H100 and A100 catalogue rates, bundle minimums, utilization, and restart overhead: how to calculate the effective cost of a useful GPU-hour before you rent.</p>
-<p class="meta"><span>By <strong>600me</strong></span><span><time datetime="2026-10-18T14:35:55Z">18 October 2026</time></span><span>1,673 words &middot; ~8 min read</span></p>
+<p class="meta"><span>By <strong>cloudbench</strong></span><span><time datetime="2026-10-18T14:35:55Z">18 October 2026</time></span><span>1,673 words &middot; ~8 min read</span></p>
 <aside class="ftc"><strong>Affiliate disclosure (FTC).</strong> Some links on this page are affiliate links. If you buy a service through them, I may earn a commission at no extra cost to you. Commissions never change the price you pay and do not buy a ranking: every table here is built from the same public planning baselines as the live dashboard. Verify current pricing and terms with each provider before purchasing.</aside>
 
 <div class="cta-panel">
@@ -381,7 +381,7 @@ effective rate = $311.75 / 100 = $3.12 per useful GPU-hour</code></pre>
 <p>Do not start with 100 GPU-hours. Start with 20 to 40 GPU-hours on the smallest rentable unit that fits the model. Measure throughput, not just latency to first token. Checkpoint every 15 minutes. Log the cost per useful GPU-hour, including storage and egress.</p>
 <p>Then compare the effective rate, not the advertised rate. A provider that is 20% cheaper per GPU-hour but interrupts twice as often may lose. A provider that is 20% more expensive but keeps the GPU fed may win.</p>
 <p>The public index and the underlying observations are here:</p>
-<ul><li><strong>GPU cloud price index:</strong> <a href="https://gpu.mybskm.top/?utm_source=devto&amp;utm_medium=article&amp;utm_campaign=gpu_benchmark">gpu.mybskm.top</a></li><li><strong>Pricing methodology:</strong> <a href="https://github.com/600me/awesome-gpu-cloud-pricing-benchmark?utm_source=devto&amp;utm_medium=article&amp;utm_campaign=gpu_benchmark">GitHub repository</a></li><li><strong>Scraping API cost calculator:</strong> <a href="https://scrape.mybskm.top/?utm_source=devto&amp;utm_medium=article&amp;utm_campaign=scraping_api_benchmark">scrape.mybskm.top</a></li></ul>
+<ul><li><strong>GPU cloud price index:</strong> <a href="https://gpu.mybskm.top/?utm_source=devto&amp;utm_medium=article&amp;utm_campaign=gpu_benchmark">gpu.mybskm.top</a></li><li><strong>Pricing methodology:</strong> <a href="https://gpu.mybskm.top?utm_source=devto&amp;utm_medium=article&amp;utm_campaign=gpu_benchmark">GitHub repository</a></li><li><strong>Scraping API cost calculator:</strong> <a href="https://scrape.mybskm.top/?utm_source=devto&amp;utm_medium=article&amp;utm_campaign=scraping_api_benchmark">scrape.mybskm.top</a></li></ul>
 <p><strong>Disclosure:</strong> Some outbound links on this page are affiliate links. If you buy a service through them, I may earn a commission at no extra cost to you. Rates are catalogue observations, not quotes, and inventory changes. Verify current pricing, storage, egress, and interruption policy with the provider before committing budget.</p>
 <p><strong>Data note:</strong> GPU rates observed 2026-10-17T12:50:44Z from RunPod's GraphQL catalogue and Vast.ai's bundles API. Secure and community availability is not guaranteed. Storage, network, taxes, and restart overhead are excluded from the headline rates.</p>
 </div>

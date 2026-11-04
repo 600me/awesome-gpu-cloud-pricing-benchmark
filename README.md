@@ -20,7 +20,7 @@ Free tools and dollar-per-useful-GPU-hour teardowns behind this dashboard:
 - [All research (blog index)](/blog/)
 - [The H100 rental trap](/blog/h100-rental-trap.html)
 - [RunPod vs Vast.ai real cost](/blog/runpod-vs-vastai-h100-a100.html)
-- [HF Space: LLM GPU cost calculator](https://huggingface.co/spaces/600me/llm-gpu-cost-calculator)
+- [HF Space: LLM GPU cost calculator](https://gpu.mybskm.top/calculator/)
 
 ## Cheapest H100 GPU cloud: hourly price matrix
 
@@ -110,7 +110,7 @@ Product buttons point at an attributed relay for activated partners (RunPod, Vas
 
 ## Sister Projects (Matrix Interlinks)
 
-- [Proxy Infrastructure Benchmark](https://proxy.mybskm.top) · [GitHub repository](https://github.com/600me/awesome-residential-proxies-benchmark)
-- [Global GPU Cloud Benchmark](https://gpu.mybskm.top) · [GitHub repository](https://github.com/600me/awesome-gpu-cloud-pricing-benchmark)
-- [Global Payments Matrix](https://pay.mybskm.top) · [GitHub repository](https://github.com/600me/awesome-indie-global-payments-matrix)
-- [Web Scraping APIs Benchmark](https://scrape.mybskm.top) · [GitHub repository](https://github.com/600me/awesome-web-scraping-apis-benchmark)
+- [Proxy Infrastructure Benchmark](https://proxy.mybskm.top)
+- [Global GPU Cloud Benchmark](https://gpu.mybskm.top)
+- [Global Payments Matrix](https://pay.mybskm.top)
+- [Web Scraping APIs Benchmark](https://scrape.mybskm.top)
