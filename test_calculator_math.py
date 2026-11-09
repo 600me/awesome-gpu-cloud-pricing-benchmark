@@ -344,7 +344,7 @@ def main() -> int:
     main_html = MAIN.read_text(encoding="utf-8")
     check('href="/calculator/"' in main_html,
           "main site contains a direct /calculator/ navigation link")
-    check("Interactive GPU Fit" in main_html and "Cost Calculator" in main_html,
+    check("VRAM &amp; Cost Calculator" in main_html and "Cost Calculator" in main_html,
           "main-site nav uses the required calculator label")
     check(main_html.find('href="/calculator/"') < main_html.find("<h1>"),
           "calculator navigation appears above the main-site hero")
