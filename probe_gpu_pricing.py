@@ -163,8 +163,7 @@ def read_cache():
             return {row_key(r): r for group in ("gpu", "llm")
                     for r in data.get(group, []) if isinstance(r, dict)}
     except (OSError, ValueError, TypeError, AttributeError):
-        pass
-    return {}
+        return {}
 
 
 def fetch_provider(provider, now):
