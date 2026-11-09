@@ -24,7 +24,7 @@ LINKS = {
     "DeepInfra": "https://deepinfra.com",
 }
 DISCLOSURE = ("FTC Affiliate Disclosure: Some outbound vendor links on this page (via go.272738.xyz, "
-              "such as ScraperAPI, Smartproxy/Decodo, RunPod, Vast.ai, and Firstbase) are affiliate links "
+              "such as ScraperAPI, Smartproxy/Decodo, RunPod, Vast.ai, ElevenLabs, and Firstbase) are affiliate links "
               "that may earn a commission at no extra cost to you. Unaffiliated vendors and open-source "
               "baselines are included using identical objective formulas.")
 
@@ -319,7 +319,7 @@ def render_readme(data):
            "then compare Together.ai, OpenRouter and DeepInfra API costs before your next deployment.", "",
            cost_example(data), "",
            "[Launch on RunPod](" + LINKS["RunPod"] + ") · [Find a Vast.ai GPU](" + LINKS["Vast.ai"] + ")", "",
-           "> **" + DISCLOSURE + "**", "", QUICK_VERDICT.split("\n")[::1], "",
+           "> **" + DISCLOSURE + "**", "", *QUICK_VERDICT.split("\n"), "",
            "## Calculators and deep research", "",
            "Free tools and dollar-per-useful-GPU-hour teardowns behind this dashboard:", ""]
     out += [f"- [{label}]({url})" for label, url in RESEARCH]
@@ -410,7 +410,7 @@ def render_html(data):
 <style>
 :root{color-scheme:dark;--bg:#090d14;--panel:#101925;--line:#253246;--muted:#a0afc2;--green:#63f6ba;--ink:#edf5ff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 90% 0,#152d31,transparent 45%),var(--bg);color:var(--ink);font:15px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace}main{max-width:1320px;margin:auto;padding:42px 24px}a{color:var(--green)}.eyebrow{color:var(--green);letter-spacing:.15em;font-size:12px}h1{font-family:system-ui,sans-serif;letter-spacing:-.04em;font-size:clamp(32px,5vw,62px);line-height:1.1;max-width:1000px;margin:20px 0}h2{font:600 23px system-ui,sans-serif}.intro{max-width:900px;color:var(--muted)}.callout{background:linear-gradient(100deg,#102a26,#122030);border:1px solid #2b5e50;border-radius:14px;padding:20px;margin:24px 0}.providers{display:flex;gap:10px;flex-wrap:wrap}.providers a,.action{display:inline-block;text-decoration:none;padding:9px 13px;border:1px solid #326b58;border-radius:7px;background:#122b25}.action.primary{background:var(--green);color:#06251a;border-color:var(--green);font-weight:700}.ftc{margin:0 0 22px;padding:16px 20px;border:1px solid #7a6438;border-radius:12px;background:#1b1608;color:#e6d4a4;font-size:13px;line-height:1.6}.ftc strong{color:#ffd98a}.tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:28px 0 14px}button,input,select{font:inherit;color:var(--ink);border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:12px}button{cursor:pointer}button[aria-selected=true]{background:var(--green);color:#06251a}input{flex:1;min-width:200px}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:12px;background:#0d1520}table{width:100%;border-collapse:collapse;min-width:860px}th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}th,td{padding:17px 16px;border-bottom:1px solid var(--line);vertical-align:top}tbody tr:hover{background:#152232}small{display:block;color:var(--muted);font-size:11px;max-width:300px;overflow-wrap:anywhere}.price{font-size:20px;color:var(--green);white-space:nowrap}.badge{font-size:11px;color:#eecb87}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:28px 0}.card{padding:20px;background:var(--panel);border:1px solid var(--line);border-radius:12px}.card p,footer{color:var(--muted);font-size:12px}.empty{text-align:center;color:var(--muted)}footer{border-top:1px solid var(--line);padding-top:20px;margin-top:32px}#count{color:var(--muted);font-size:12px}@media(max-width:600px){main{padding:28px 14px}.tools>*{flex:1}select{width:100%}.price{font-size:17px}}
 </style></head><body><main>
-<section class="ftc" id="disclosure" aria-label="FTC affiliate disclosure"><strong>FTC Affiliate Disclosure:</strong> Some outbound vendor links on this page (via go.272738.xyz, such as ScraperAPI, Smartproxy/Decodo, RunPod, Vast.ai, and Firstbase) are affiliate links that may earn a commission at no extra cost to you. Unaffiliated vendors and open-source baselines are included using identical objective formulas.</section>
+<section class="ftc" id="disclosure" aria-label="FTC affiliate disclosure"><strong>FTC Affiliate Disclosure:</strong> Some outbound vendor links on this page (via go.272738.xyz, such as ScraperAPI, Smartproxy/Decodo, RunPod, Vast.ai, ElevenLabs, and Firstbase) are affiliate links that may earn a commission at no extra cost to you. Unaffiliated vendors and open-source baselines are included using identical objective formulas.</section>
 <div class="eyebrow">GPU / INFERENCE / COST INTELLIGENCE — 2026</div>
 <h1>Your next GPU bill<br>starts with a better quote.</h1>
 <p class="intro"><a href="https://gpu.mybskm.top/">Live pricing dashboard</a></p>

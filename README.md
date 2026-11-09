@@ -10,7 +10,7 @@ Stop paying for idle GPUs and expensive output tokens. Compare RunPod vs Vast.ai
 
 [Launch on RunPod](https://go.272738.xyz/runpod?src=gpu_home) · [Find a Vast.ai GPU](https://go.272738.xyz/vastai?src=gpu_home)
 
-> **FTC Affiliate Disclosure: Some outbound vendor links on this page (via go.272738.xyz, such as ScraperAPI, Smartproxy/Decodo, RunPod, Vast.ai, and Firstbase) are affiliate links that may earn a commission at no extra cost to you. Unaffiliated vendors and open-source baselines are included using identical objective formulas.**
+> **FTC Affiliate Disclosure: Some outbound vendor links on this page (via go.272738.xyz, such as ScraperAPI, Smartproxy/Decodo, RunPod, Vast.ai, ElevenLabs, and Firstbase) are affiliate links that may earn a commission at no extra cost to you. Unaffiliated vendors and open-source baselines are included using identical objective formulas.**
 
 ## ⚡ The Quick Verdict (For Readers in a Hurry)
 
@@ -29,6 +29,7 @@ Stop paying for idle GPUs and expensive output tokens. Compare RunPod vs Vast.ai
 | **Vast.ai — A100 80GB PCIe** | 80 GB | **$1.002/hr** | $100.20 | Verified Datacenter Host Filter | [**Rent Vast.ai A100 80GB →**](https://go.272738.xyz/vastai?gpu=a100%20pcie&src=gpu_tier_a100) |
 | **Vast.ai — H100 80GB SXM** | 80 GB | **$2.136/hr** | $213.60 | Lowest 100-hr H100 SXM Total ($213.60) | [**Rent Vast.ai H100 SXM →**](https://go.272738.xyz/vastai?gpu=h100%20sxm&src=gpu_tier_h100) |
 | **ElevenLabs — Voice AI & Dubbing** | Managed API | **$0 Free** / $5 Starter | 10k–30k chars | **No credit card required** (Free tier) + 50% OFF Creator | [**Start Free Voice Trial →**](https://go.272738.xyz/elevenlabs?src=gpu_tier_elevenlabs) |
+
 
 ## Calculators and deep research
 
@@ -108,14 +109,14 @@ Live = public API quote observed this run; cache = previous quote with its origi
 - **RunPod · RTX 4090**: Secure catalog rate; inventory not guaranteed (live; 2026-11-08T18:24:06Z). Source: `https://api.runpod.io/graphql`.
 - **Vast.ai · RTX 4090**: Lowest sampled verified rentable offer; 2 GPU bundle; storage/network extra (live; 2026-11-08T18:24:06Z). Source: `https://console.vast.ai/api/v0/bundles/`.
 - **OpenRouter · DeepSeek-V3**: Router catalog; provider routing can change (live; 2026-11-08T18:24:06Z). Source: `https://openrouter.ai/api/v1/models`.
-- **OpenRouter · DeepSeek-R1**: Router catalog; provider routing can change (cache (origin: live); 2026-10-18T16:37:25Z). Source: `https://go.272738.xyz/openrouter?src=gpu_home/api/v1/models`.
+- **OpenRouter · DeepSeek-R1**: Router catalog; provider routing can change (cache (origin: live); 2026-10-18T16:37:25Z). Source: `https://openrouter.ai/api/v1/models`.
 - **OpenRouter · Llama-3.3-70B**: Router catalog; provider routing can change (live; 2026-11-08T18:24:06Z). Source: `https://openrouter.ai/api/v1/models`.
 - **DeepInfra · DeepSeek-V3**: Standard uncached catalog rate (live; 2026-11-08T18:24:06Z). Source: `https://api.deepinfra.com/models/list`.
 - **DeepInfra · DeepSeek-R1-0528**: 0528 revision; not the original R1 checkpoint (live; 2026-11-08T18:24:06Z). Source: `https://api.deepinfra.com/models/list`.
 - **DeepInfra · Llama-3.3-70B Turbo**: Turbo FP8 variant (live; 2026-11-08T18:24:06Z). Source: `https://api.deepinfra.com/models/list`.
-- **Together.ai · DeepSeek-V3-0324**: Dedicated/reference listing; serverless availability not verified (cache (origin: baseline); reference 2026-10-16). Source: `https://go.272738.xyz/together?src=gpu_home/models/deepseek-v3`.
+- **Together.ai · DeepSeek-V3-0324**: Dedicated/reference listing; serverless availability not verified (cache (origin: baseline); reference 2026-10-16). Source: `https://www.together.ai/models/deepseek-v3`.
 - **Together.ai · DeepSeek-R1-0528**: Not available on Together Serverless; no current token quote (null; reference 2026-10-16). Source: `https://www.together.ai/models/deepseek-r1`.
-- **Together.ai · Llama-3.3-70B**: Public pricing page reference; API authentication required (cache (origin: baseline); reference 2026-10-16). Source: `https://go.272738.xyz/together?src=gpu_home/pricing`.
+- **Together.ai · Llama-3.3-70B**: Public pricing page reference; API authentication required (cache (origin: baseline); reference 2026-10-16). Source: `https://www.together.ai/pricing`.
 
 ## How prices are normalized
 
