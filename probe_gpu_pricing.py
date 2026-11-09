@@ -27,6 +27,25 @@ DISCLOSURE = ("FTC Affiliate Disclosure: Some outbound vendor links on this page
               "such as ScraperAPI, Smartproxy/Decodo, RunPod, Vast.ai, and Firstbase) are affiliate links "
               "that may earn a commission at no extra cost to you. Unaffiliated vendors and open-source "
               "baselines are included using identical objective formulas.")
+
+QUICK_VERDICT = '''## ⚡ The Quick Verdict (For Readers in a Hurry)
+
+- **Pick [RunPod](https://go.272738.xyz/runpod?gpu=H100+PCIe&src=gpu_readme_verdict) if** you need zero-cold-start Docker templates (vLLM, PyTorch, ComfyUI), persistent NVMe network volumes, and instant per-second billing — [**Deploy an H100 / A100 / RTX 4090 Pod ($10–$500 Partner Bonus Box)**](https://go.272738.xyz/runpod?gpu=H100+PCIe&src=gpu_readme_verdict_cta).
+- **Pick [Vast.ai](https://go.272738.xyz/vastai?gpu=h100%20sxm&src=gpu_readme_verdict) if** you run fault-tolerant batch fine-tuning or evals and want the lowest raw spot/on-demand GPU rate (saves **$185.40 per 100 H100 SXM hours**) — [**Search Verified Vast.ai GPUs (Auto-Applied Partner Credit)**](https://go.272738.xyz/vastai?gpu=h100%20sxm&src=gpu_readme_verdict_cta).
+- **Pick [ElevenLabs](https://go.272738.xyz/elevenlabs?src=gpu_readme_verdict) if** your workload is AI voice cloning, multilingual TTS, or video dubbing — [**Start Free on ElevenLabs (10,000 chars/mo free, no credit card required + 50% OFF Creator 1st mo)**](https://go.272738.xyz/elevenlabs?src=gpu_readme_verdict_cta).
+
+## 🎟️ 2026 GPU Tier & SKU Direct Launch Matrix (1-Click Pod Deployment + Partner Credits)
+
+| Provider & GPU Tier | VRAM | On-Demand Rate | 100 GPU-Hours | Partner Offer / Trial | 1-Click SKU Deployment |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **RunPod — RTX 4090 Community** | 24 GB | **$0.340/hr** | $34.00 | Per-second billing + $10–$500 Bonus Box | [**Deploy RTX 4090 Pod →**](https://go.272738.xyz/runpod?gpu=RTX+4090&src=gpu_tier_rtx4090) |
+| **RunPod — A100 80GB PCIe** | 80 GB | **$1.190/hr** | $119.00 | Pre-built vLLM / DeepSeek Templates | [**Deploy A100 80GB Pod →**](https://go.272738.xyz/runpod?gpu=A100+PCIe&src=gpu_tier_a100) |
+| **RunPod — H100 80GB PCIe** | 80 GB | **$1.990/hr** | $199.00 | Instant SSH + NVMe Volume Support | [**Deploy H100 80GB Pod →**](https://go.272738.xyz/runpod?gpu=H100+PCIe&src=gpu_tier_h100) |
+| **Vast.ai — RTX 4090 Verified** | 24 GB | **$0.341/hr** | $34.10 | Up to 60% off AWS/GCP + Partner Rate | [**Rent Vast.ai RTX 4090 →**](https://go.272738.xyz/vastai?gpu=rtx%204090&src=gpu_tier_rtx4090) |
+| **Vast.ai — A100 80GB PCIe** | 80 GB | **$1.002/hr** | $100.20 | Verified Datacenter Host Filter | [**Rent Vast.ai A100 80GB →**](https://go.272738.xyz/vastai?gpu=a100%20pcie&src=gpu_tier_a100) |
+| **Vast.ai — H100 80GB SXM** | 80 GB | **$2.136/hr** | $213.60 | Lowest 100-hr H100 SXM Total ($213.60) | [**Rent Vast.ai H100 SXM →**](https://go.272738.xyz/vastai?gpu=h100%20sxm&src=gpu_tier_h100) |
+| **ElevenLabs — Voice AI & Dubbing** | Managed API | **$0 Free** / $5 Starter | 10k–30k chars | **No credit card required** (Free tier) + 50% OFF Creator | [**Start Free Voice Trial →**](https://go.272738.xyz/elevenlabs?src=gpu_tier_elevenlabs) |
+'''
 # Calculators, research pages and the public mirror. Kept in one place so every
 # regeneration of index.html and README.md emits the same navigation.
 RESEARCH = [
@@ -300,7 +319,7 @@ def render_readme(data):
            "then compare Together.ai, OpenRouter and DeepInfra API costs before your next deployment.", "",
            cost_example(data), "",
            "[Launch on RunPod](" + LINKS["RunPod"] + ") · [Find a Vast.ai GPU](" + LINKS["Vast.ai"] + ")", "",
-           "> **" + DISCLOSURE + "**", "",
+           "> **" + DISCLOSURE + "**", "", QUICK_VERDICT.split("\n")[::1], "",
            "## Calculators and deep research", "",
            "Free tools and dollar-per-useful-GPU-hour teardowns behind this dashboard:", ""]
     out += [f"- [{label}]({url})" for label, url in RESEARCH]
