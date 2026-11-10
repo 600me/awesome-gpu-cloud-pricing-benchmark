@@ -41,8 +41,8 @@ QUICK_VERDICT = '''## ⚡ The Quick Verdict (For Readers in a Hurry)
 | **RunPod — RTX 4090 Community** | 24 GB | **$0.340/hr** | $34.00 | Per-second billing + $10–$500 Bonus Box | [**Deploy RTX 4090 Pod →**](https://go.272738.xyz/runpod?gpu=RTX+4090&src=gpu_tier_rtx4090) |
 | **RunPod — A100 80GB PCIe** | 80 GB | **$1.190/hr** | $119.00 | Pre-built vLLM / DeepSeek Templates | [**Deploy A100 80GB Pod →**](https://go.272738.xyz/runpod?gpu=A100+PCIe&src=gpu_tier_a100) |
 | **RunPod — H100 80GB PCIe** | 80 GB | **$1.990/hr** | $199.00 | Instant SSH + NVMe Volume Support | [**Deploy H100 80GB Pod →**](https://go.272738.xyz/runpod?gpu=H100+PCIe&src=gpu_tier_h100) |
-| **Vast.ai — RTX 4090 Verified** | 24 GB | **$0.384/hr** | $38.40 | Up to 60% off AWS/GCP + Partner Rate | [**Rent Vast.ai RTX 4090 →**](https://go.272738.xyz/vastai?gpu=rtx%204090&src=gpu_tier_rtx4090) |
-| **Vast.ai — A100 80GB PCIe** | 80 GB | **$0.940/hr** | $94.00 | Verified Datacenter Host Filter | [**Rent Vast.ai A100 80GB →**](https://go.272738.xyz/vastai?gpu=a100%20pcie&src=gpu_tier_a100) |
+| **Vast.ai — RTX 4090 Verified** | 24 GB | **$0.341/hr** | $34.10 | Up to 60% off AWS/GCP + Partner Rate | [**Rent Vast.ai RTX 4090 →**](https://go.272738.xyz/vastai?gpu=rtx%204090&src=gpu_tier_rtx4090) |
+| **Vast.ai — A100 80GB PCIe** | 80 GB | **$1.002/hr** | $100.20 | Verified Datacenter Host Filter | [**Rent Vast.ai A100 80GB →**](https://go.272738.xyz/vastai?gpu=a100%20pcie&src=gpu_tier_a100) |
 | **Vast.ai — H100 80GB SXM** | 80 GB | **$2.136/hr** | $213.60 | Lowest 100-hr H100 SXM Total ($213.60) | [**Rent Vast.ai H100 SXM →**](https://go.272738.xyz/vastai?gpu=h100%20sxm&src=gpu_tier_h100) |
 | **ElevenLabs — Voice AI & Dubbing** | Managed API | **$0 Free** / $5 Starter | 10k–30k chars | Free tier available + 50% OFF Creator | [**Start Free Voice Trial →**](https://go.272738.xyz/elevenlabs?src=gpu_tier_elevenlabs) |
 '''
